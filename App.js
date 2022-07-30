@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import AppButton from './components/Button';
 import AppTextInput from './components/TextInput';
 import LoginScreen from './screens/Login/Login';
+import Screens from './screens/Onboarding/Screens';
 
 export default function App() {
   return (
@@ -10,7 +11,8 @@ export default function App() {
       {/* <AppTextInput placeholder={"Email"} icon={"email"} />
       <AppButton title={"Sign in"} />
       <StatusBar style="auto" /> */}
-      <LoginScreen />
+      {/* <LoginScreen /> */}
+      <Screens />
     </View>
   );
 }
