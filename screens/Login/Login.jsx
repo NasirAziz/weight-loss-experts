@@ -86,10 +86,10 @@ const styles = StyleSheet.create({
         marginTop: "2rem",
     },
     logo: {
-        width: 250,
-        height: 100,
+        width: 180,
+        height: 70,
         alignSelf: "center",
-        marginTop: 50,
+        marginTop: 30,
         marginBottom: 20,
     },
     link: {
