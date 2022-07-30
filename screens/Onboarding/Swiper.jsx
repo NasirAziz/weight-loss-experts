@@ -144,8 +144,9 @@ export default class Swiper extends Component {
      * Swipe one slide forward
      */
     swipe = () => {
+        debugger
         // Ignore if already scrolling or if there is less than 2 slides
-        if (this.internals.isScrolling || this.state.total < 2) {
+        if (this.state.total < 2) {//|| this.internals.isScrolling
             return;
         }
 
@@ -231,6 +232,7 @@ export default class Swiper extends Component {
      * Render Continue or Done button
      */
     renderButton = () => {
+        // debugger
         const lastScreen = this.state.index === this.state.total - 1;
         return (
             <View
@@ -245,7 +247,9 @@ export default class Swiper extends Component {
                     />
                 ) : (
                     // Or this one otherwise
-                    <AppButton title="Next" onPress={() => this.swipe()} />
+                    <AppButton title="Next" onPress={() => {
+                        this.swipe()
+                    }} />
                 )}
             </View>
         );

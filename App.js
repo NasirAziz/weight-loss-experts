@@ -1,18 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import AppButton from './components/Button';
-import AppTextInput from './components/TextInput';
+import ActivityLevel from './screens/ActivityLevel/ActivityLevel';
+// import AppTextInput from './components/TextInput';
 import LoginScreen from './screens/Login/Login';
-import Screens from './screens/Onboarding/Screens';
+import OnBoarding from './screens/Onboarding/OnBoarding';
+// import CustomButtons from './screens/Onboarding/OnBoarding';
+// import Screens from './screens/Onboarding/Screens';
+// import { Button } from 'react-native-elements';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* <AppTextInput placeholder={"Email"} icon={"email"} />
-      <AppButton title={"Sign in"} />
-      <StatusBar style="auto" /> */}
       {/* <LoginScreen /> */}
-      <Screens />
+      <ActivityLevel />
     </View>
   );
 }

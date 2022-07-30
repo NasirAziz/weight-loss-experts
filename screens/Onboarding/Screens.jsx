@@ -13,7 +13,7 @@ export default class Screens extends Component {
         return (
             <>
                 <img style={{ width: "100%", marginBottom: 10, marginTop: 0 }} src={require("../../assets/TopWave1.svg")} />
-                <View style={{ marginBottom: "-32%", flexDirection: 'row', width: "100%" }}>
+                <View style={{ marginBottom: "-50%", flexDirection: 'row', width: "100%" }}>
                     <AppText style={styles.title}>Weight Loss Experts</AppText>
                     <AppText style={styles.link}>Skip</AppText>
                 </View>
@@ -31,6 +31,12 @@ export default class Screens extends Component {
                         <AppText style={styles.text}>Browse thousands of healthy recipes from all over the world</AppText>
                     </View>
                     {/* Third screen */}
+                    <View style={[styles.slide]}>
+                        <img src={require('../../assets/cuate3.svg')} />
+                        <AppText style={styles.header}>Track Your Health</AppText>
+                        <AppText style={styles.text}>With amazing inbuilt tools you can track your progress</AppText>
+                    </View>
+                    {/* 4 screen */}
                     <View style={[styles.slide]}>
                         <img src={require('../../assets/cuate3.svg')} />
                         <AppText style={styles.header}>Track Your Health</AppText>
