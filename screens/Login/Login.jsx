@@ -1,22 +1,28 @@
 import React from "react";
-import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, View, Text } from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../../components/Screen";
 import { Form, FormField, SubmitButton } from "../../components/forms";
 import AppText from "../../components/Text";
 
+import TopWave from "../../assets/topwave1.svg"
+import BottomWave from "../../assets/BottomWave.svg"
+import Facebook from "../../assets/facebook.svg"
+import Goolge from "../../assets/google.svg"
+import Logo from "../../assets/logo2.svg"
+
 const validationSchema = Yup.object().shape({
     email: Yup.string().required().email().label("Email"),
-    password: Yup.string().required().min(4).label("Password"),
+    password: Yup.string().required().min(6).label("Password"),
 });
 
-function LoginScreen(props) {
+function LoginScreen() {
     return (
         <>
-            <img style={{ width: "100%" }} src={require("../../assets/TopWave1.svg")} />
+            <TopWave height={"11.5%"} width={"100%"} />
             <Screen style={styles.container}>
-                <Image style={styles.logo} source={require("../../assets/logo2.svg")} />
+                <Logo style={styles.logo} />
                 <AppText style={styles.title} >Sign in</AppText>
                 <Form
                     initialValues={{ email: "", password: "" }}
@@ -49,22 +55,25 @@ function LoginScreen(props) {
                 <View style={styles.iconsContainer}>
 
                     <TouchableOpacity style={styles.icon}>
-                        <img src={require("../../assets/facebook.svg")} />
+                        <Facebook height={50} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.icon} >
-                        <img src={require("../../assets/google.svg")} />
+                        <Goolge height={50} />
                     </TouchableOpacity>
 
                 </View>
             </Screen>
+            <BottomWave height={"12.7%"} width={"100%"} />
 
-            <img style={{ width: "100%" }} src={require("../../assets/BottomWave.svg")} />
 
         </>
     );
 }
 
 const styles = StyleSheet.create({
+    logo: {
+        width: "100%",
+    },
     container: {
         padding: 25,
         width: "100%"
@@ -72,24 +81,21 @@ const styles = StyleSheet.create({
     desc: {
         color: "#A9A9A9",
         fontSize: 12,
-        marginBottom: "1rem",
+        marginBottom: 10,
     },
     icon: {
         width: 25,
         height: 25,
-        marginHorizontal: "2rem",
+        marginHorizontal: 20,
 
     },
     iconsContainer: {
         flexDirection: "row",
         justifyContent: "center",
-        marginTop: "2rem",
+        marginTop: 20,
     },
     logo: {
-        width: 180,
-        height: 70,
         alignSelf: "center",
-        marginTop: 30,
         marginBottom: 20,
     },
     link: {
@@ -101,15 +107,15 @@ const styles = StyleSheet.create({
     signup: {
         color: "#A9A9A9",
         fontSize: 12,
-        marginTop: "1rem",
+        marginTop: 10,
         textAlign: "center",
 
     },
     title: {
         fontSize: 20,
-        fontWeight: 500,
         marginVertical: 10,
         textAlign: "center",
+        fontWeight: "bold",
     }
 });
 

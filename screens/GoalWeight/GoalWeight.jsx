@@ -7,10 +7,12 @@ import colors from '../../config/colors'
 import AppButton from '../../components/Button'
 import AppTextInput from '../../components/TextInput'
 
-import TopWave from "../../assets/topwave1.svg"
-import Running from "../../assets/running.svg"
 
-export default function ActivityLevel() {
+import TopWave from "../../assets/topwave1.svg"
+import BMI from "../../assets/women-bmi.svg"
+
+
+export default function GoalWight() {
     const [isScaleActive, setIsScaleActive] = React.useState(true)
     const [isCustomActive, setIsCustomActive] = React.useState(false)
     const [sliderValue, setSliderValue] = React.useState(0)
@@ -18,10 +20,9 @@ export default function ActivityLevel() {
     return (
         <>
             <TopWave height={"11.5%"} width={"100%"} />
-
             <View style={{ flex: 1, width: "100%", padding: 10, }}>
 
-                <AppText style={styles.title}>{"Tell us about your\nActivity level"}</AppText>
+                <AppText style={styles.title}>{"What is your\nGoal Weight"}</AppText>
                 <View style={{ flexDirection: 'row', alignSelf: "center", width: "100%", marginVertical: 10, justifyContent: "space-around" }}>
 
                     <SwitchButton
@@ -41,18 +42,25 @@ export default function ActivityLevel() {
                 </View >
 
                 <View style={styles.card}>
-                    <Running />
+                    <BMI style={{ position: "absolute", top: 0, }} />
                     {isScaleActive &&
                         <>
-                            <AppText style={styles.title}>Mid</AppText>
+                            <View style={{ flexDirection: "row", marginTop: 40, justifyContent: "space-between", width: "100%" }}>
+
+                                <AppText >Lose</AppText>
+                                <AppText style={{}}>Maintain</AppText>
+                                <AppText style={{}}>Gain</AppText>
+
+                            </View>
+                            {/* <AppText style={styles.title}>Mid</AppText> */}
                             <AppText style={styles.title}>Slider Here</AppText>
                             <AppText style={styles.desc}>Example description Example description Example description Example description</AppText>
                         </>
                     }
                     {isCustomActive &&
                         <>
-                            <AppText style={styles.title}>Set Your Own Daily Value</AppText>
-                            <AppTextInput placeholder="2000 kcal" onChangeText={(e) => { setCustomValue(e) }} />
+                            <AppText style={[styles.title, { marginTop: 50 }]}>Set Your Own Daily Value</AppText>
+                            <AppTextInput placeholder="1 kg/week" onChangeText={(e) => { setCustomValue(e) }} />
 
                         </>
                     }
@@ -68,8 +76,9 @@ export default function ActivityLevel() {
 
 const styles = StyleSheet.create({
     card: {
+        overflow: "hidden",
         width: "90%",
-        height: "50%",
+        height: "55%",
         backgroundColor: colors.white,
         borderRadius: 20,
         padding: 20,
@@ -92,6 +101,7 @@ const styles = StyleSheet.create({
         color: colors.dark,
         textAlign: "center",
         marginVertical: 10
+
     },
     title: {
         fontSize: 25,

@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import AppText from './Text'
 import colors from '../config/colors'
-import { TouchableOpacity } from 'react-native-web'
 
 export default function SwitchButton({ isActive, onPress, title, style }) {
     return (
@@ -16,6 +15,7 @@ export default function SwitchButton({ isActive, onPress, title, style }) {
             }, style]}>
             <AppText style={{ color: isActive ? "#fff" : colors.primary, }}>{title}</AppText>
         </TouchableOpacity>
+
     )
 }
 

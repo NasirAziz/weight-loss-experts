@@ -1,18 +1,17 @@
 import { Image, StyleSheet, View } from 'react-native';
 import AppButton from './components/Button';
 import ActivityLevel from './screens/ActivityLevel/ActivityLevel';
+import GoalWeight from './screens/GoalWeight/GoalWeight';
 // import AppTextInput from './components/TextInput';
 import LoginScreen from './screens/Login/Login';
-import OnBoarding from './screens/Onboarding/OnBoarding';
-// import CustomButtons from './screens/Onboarding/OnBoarding';
-// import Screens from './screens/Onboarding/Screens';
-// import { Button } from 'react-native-elements';
 
 export default function App() {
   return (
     <View style={styles.container}>
       {/* <LoginScreen /> */}
       <ActivityLevel />
+      {/* <GoalWeight /> */}
+
     </View>
   );
 }
