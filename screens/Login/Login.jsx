@@ -6,11 +6,11 @@ import Screen from "../../components/Screen";
 import { Form, FormField, SubmitButton } from "../../components/forms";
 import AppText from "../../components/Text";
 
-import TopWave from "../../assets/topwave1.svg"
-import BottomWave from "../../assets/BottomWave.svg"
+import BottomWave from "../../components/BottomWave"
 import Facebook from "../../assets/facebook.svg"
 import Goolge from "../../assets/google.svg"
 import Logo from "../../assets/logo2.svg"
+import TopWave1 from "../../components/TopWave1";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().required().email().label("Email"),
@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
 function LoginScreen() {
     return (
         <>
-            <TopWave height={"11.5%"} width={"100%"} />
+            <TopWave1 />
             <Screen style={styles.container}>
                 <Logo style={styles.logo} />
                 <AppText style={styles.title} >Sign in</AppText>
@@ -63,7 +63,7 @@ function LoginScreen() {
 
                 </View>
             </Screen>
-            <BottomWave height={"12.7%"} width={"100%"} />
+            <BottomWave />
 
 
         </>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     container: {
-        padding: 25,
+        padding: 10,
         width: "100%"
     },
     desc: {

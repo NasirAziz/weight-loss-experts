@@ -11,7 +11,7 @@ export default function SwitchButton({ isActive, onPress, title, style }) {
                 elevation: isActive ? 5 : 0,
                 backgroundColor: isActive ? colors.primary : "#fff",
 
-                borderColor: isActive ? "#fff" : colors.primary,
+                borderColor: colors.primary,
             }, style]}>
             <AppText style={{ color: isActive ? "#fff" : colors.primary, }}>{title}</AppText>
         </TouchableOpacity>
@@ -21,7 +21,7 @@ export default function SwitchButton({ isActive, onPress, title, style }) {
 
 const styles = StyleSheet.create({
     button: {
-        width: "23%",
+        // width: "23%",
         height: 45,
         borderWidth: 1,
         borderRadius: 25,
@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
+        paddingHorizontal: 20,
     }
 })
