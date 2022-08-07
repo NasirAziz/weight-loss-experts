@@ -18,7 +18,7 @@ export default function Calories() {
     const [age, setAge] = React.useState(0)
     const [gender, setGender] = React.useState(0)
     return (
-        <View>
+        <>
             <TopWave1 />
             <Screen >
                 <View style={styles.container} >
@@ -57,7 +57,7 @@ export default function Calories() {
                 </View>
             </Screen>
             <BottomWave />
-        </View>
+        </>
 
     )
 }

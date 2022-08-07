@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
 import Screen from '../components/Screen'
@@ -10,17 +10,17 @@ import SwitchButton from '../components/SwitchButton'
 import AppTextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 
-export default function BMI() {
+export default function BMI({ navigation }) {
     const [isMetricActive, setIsMetricActive] = React.useState(true)
     const [isImperialActice, setIsImperialActice] = React.useState(false)
     const [height, setHeight] = React.useState(0)
     const [weight, setWeight] = React.useState(0)
     return (
-        <View>
+        < >
             <TopWave1 />
             <Screen >
                 <View style={styles.container} >
-                    <BackButton onPress={() => { }} />
+                    <BackButton onPress={() => { navigation.pop() }} />
                     <AppText style={styles.text}>{"START Calculating\nYOUR BMI"}</AppText>
 
                     <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -40,20 +40,20 @@ export default function BMI() {
 
                     </View>
 
-                    <TouchableOpacity style={{
+                    <Pressable style={{
                         position: 'absolute',
                         bottom: 80,
                         alignSelf: 'center',
                     }}
-                        onPres={() => { }}
+                        onPress={() => { console.log("Pressed"); navigation.navigate('BodyFat') }}
                     >
-                        <AppText style={styles.calculate}>Calculate</AppText>
-                    </TouchableOpacity>
+                        <AppText onPres={() => { console.log("Pressed"); navigation.navigate('BodyFat') }} style={styles.calculate}>Calculate</AppText>
+                    </Pressable>
 
                 </View>
             </Screen>
             <BottomWave />
-        </View>
+        </>
 
     )
 }
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+
     },
     calculate: {
         fontSize: 22,

@@ -11,7 +11,7 @@ import TopWave from "../../assets/topwave1.svg"
 import Running from "../../assets/running.svg"
 import TopWave1 from '../../components/TopWave1'
 
-export default function ActivityLevel() {
+export default function ActivityLevel({ navigation }) {
     const [isScaleActive, setIsScaleActive] = React.useState(true)
     const [isCustomActive, setIsCustomActive] = React.useState(false)
     const [sliderValue, setSliderValue] = React.useState(0)
@@ -71,7 +71,7 @@ export default function ActivityLevel() {
                     }
                 </View>
                 <View style={{ margin: 20, }}>
-                    <AppButton title={"Next"} onPress={() => { console.log(customValue) }} />
+                    <AppButton title={"Next"} onPress={() => { navigation.navigate('GoalWeight') }} />
                 </View>
             </View>
         </>

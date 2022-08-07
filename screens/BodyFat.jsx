@@ -12,7 +12,7 @@ import BackButton from '../components/BackButton'
 import AppPicker from '../components/Picker'
 import PickerItem from '../components/PickerItem'
 
-export default function BodyFat() {
+export default function BodyFat({ navigation }) {
     const [isMetricActive, setIsMetricActive] = React.useState(true)
     const [isImperialActice, setIsImperialActice] = React.useState(false)
     const [height, setHeight] = React.useState(0)
@@ -20,13 +20,13 @@ export default function BodyFat() {
     const [age, setAge] = React.useState(0)
     const [gender, setGender] = React.useState(0)
     return (
-        <View>
+        <>
             <TopWave1 />
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView style={{ flex: 1, height: "100%", width: "100%", display: "flex" }}>
                 <Screen >
                     <View style={styles.container} >
 
-                        <BackButton onPress={() => { }} />
+                        <BackButton onPress={() => { navigation.pop() }} />
                         <AppText style={styles.text}>{"START Calculating\nYOUR Body Fat"}</AppText>
 
                         <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -51,7 +51,9 @@ export default function BodyFat() {
                             <TouchableOpacity style={{
                                 alignSelf: 'center',
                             }}
-                                onPres={() => { }}
+                                onPress={() => {
+                                    navigation.navigate("BMI")
+                                }}
                             >
                                 <AppText style={styles.calculate}>Calculate</AppText>
                             </TouchableOpacity>
@@ -64,7 +66,7 @@ export default function BodyFat() {
                 </Screen>
             </ScrollView>
             {/* <BottomWave /> */}
-        </View>
+        </>
 
     )
 }
@@ -73,6 +75,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        // height: 100,
+        // width: 100,
+        // display: "flex"
     },
     calculate: {
         fontSize: 22,

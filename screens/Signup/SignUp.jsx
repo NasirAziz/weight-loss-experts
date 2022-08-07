@@ -5,28 +5,23 @@ import * as Yup from "yup";
 import Screen from "../../components/Screen";
 import { Form, FormField, SubmitButton } from "../../components/forms";
 import AppText from "../../components/Text";
-
-import BottomWave from "../../components/BottomWave"
-import Facebook from "../../assets/facebook.svg"
-import Goolge from "../../assets/google.svg"
-import Logo from "../../assets/logo2.svg"
-import TopWave1 from "../../components/TopWave1";
+import BottomWave from "../../components/BottomWave";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().required().email().label("Email"),
     password: Yup.string().required().min(6).label("Password"),
 });
 
-function LoginScreen({ navigation }) {
+function SignUpScreen() {
     return (
         <>
-            <TopWave1 />
+            <Image style={{ width: "100%" }} source={require("../../assets/topwave1.png")} />
             <Screen style={styles.container}>
-                <Logo style={styles.logo} />
-                <AppText style={styles.title} >Sign in</AppText>
+                <Image style={styles.logo} source={require("../../assets/logo2.png")} />
+                <AppText style={styles.title} >Sign Up</AppText>
                 <Form
                     initialValues={{ email: "", password: "" }}
-                    onSubmit={(values) => console.log(values)} ////Perform Login auth logic here 
+                    onSubmit={(values) => console.log(values)}
                     validationSchema={validationSchema}
                 >
                     <FormField
@@ -47,42 +42,39 @@ function LoginScreen({ navigation }) {
                         secureTextEntry
                         textContentType="password"
                     />
-                    <AppText style={styles.desc} >Forgot Password? Reset from <AppText style={styles.link} >here</AppText></AppText>
+                    <FormField
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        icon="lock"
+                        name="Password"
+                        placeholder=" Re-Enter Password"
+                        secureTextEntry
+                        textContentType="password"
+                    />
 
-                    <SubmitButton title="Sign in"
-                        onSubmit={
-                            () => {
-                                console.log("Pressed")
-                                navigation.navigate('Activity')
-                            }
-
-                        } />
+                    <SubmitButton title="Sign Up" />
                 </Form>
-                <AppText style={styles.signup} >Don't have an account? <AppText style={styles.link} >Sign up</AppText></AppText>
                 <View style={styles.iconsContainer}>
 
                     <TouchableOpacity style={styles.icon}>
-                        <Facebook height={50} />
+                        <Image source={require("../../assets/facebook.png")} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.icon} >
-                        <Goolge height={50} />
+                        <Image source={require("../../assets/google.png")} />
                     </TouchableOpacity>
 
                 </View>
             </Screen>
-            <BottomWave />
 
+            {/* <BottomWave /> */}
 
         </>
     );
 }
 
 const styles = StyleSheet.create({
-    logo: {
-        width: "100%",
-    },
     container: {
-        padding: 10,
+        padding: 25,
         width: "100%"
     },
     desc: {
@@ -102,7 +94,10 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     logo: {
+        width: 180,
+        height: 70,
         alignSelf: "center",
+        marginTop: 0,
         marginBottom: 20,
     },
     link: {
@@ -123,7 +118,13 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         textAlign: "center",
         fontWeight: "bold",
+    },
+    bottomImage:
+    {
+        width: "100%",
+        position: "absolute",
+        bottom: 0,
     }
 });
 
-export default LoginScreen;
+export default SignUpScreen;

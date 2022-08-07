@@ -10,7 +10,7 @@ import BackButton from '../../components/BackButton';
 
 export default function Results({ text, result, unit }) {
     return (
-        <View>
+        <>
             <TopWave1 />
             <Screen>
                 <BackButton />
@@ -20,7 +20,7 @@ export default function Results({ text, result, unit }) {
                 <ResultCircle result={{ result } && "23.5%"} unit={{ unit } && "kg/m2"} />
             </Screen>
             <BottomWave />
-        </View>
+        </>
     )
 }
 
