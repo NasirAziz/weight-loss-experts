@@ -29,7 +29,7 @@ export default function App() {
   return (
 
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName='DietPlan' screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName='Results' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="Signup" component={SignUpScreen} />
         <Stack.Screen name="DietPlan" component={DietPlan} />
