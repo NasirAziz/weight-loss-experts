@@ -1,16 +1,15 @@
 'use strict';
 import React from "react";
-import { Dimensions, StyleSheet, Image, TouchableOpacity, View, Text, ScrollView, ImageBackground } from "react-native";
+import { Dimensions, StyleSheet, View, Text, ScrollView, ImageBackground } from "react-native";
 import Svg, { Path } from 'react-native-svg';
 import Week from "../../components/Week";
 import { StatusBar } from 'react-native'
-import TopWave1 from "../../components/TopWave2";
-function DietPlan() {
+import BackButton from "../../components/BackButton";
+function DietPlan({ navigation }) {
 
   return (
 
     <View style={styles.Container}>
-      {/* <TopWave1 /> */}
       <StatusBar barStyle="dark-content" hidden={false} backgroundColor="green" translucent={true} />
       <View style={styles.top}>
         <ImageBackground style={{ width: "100%", height: 200 }} source={require("../../assets/women-bmi.png")} >
@@ -28,6 +27,7 @@ function DietPlan() {
           <Text style={styles.text}> Your Diet Plan</Text>
         </ImageBackground>
 
+        <BackButton />
       </View>
       <ScrollView style={styles.scroll}>
         <View style={styles.weeks}>

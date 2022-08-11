@@ -12,7 +12,7 @@ import BMI from "../../assets/women-bmi.svg"
 import TopWave1 from '../../components/TopWave1'
 
 
-export default function GoalWight() {
+export default function GoalWight({ navigation }) {
     const [isScaleActive, setIsScaleActive] = React.useState(true)
     const [isCustomActive, setIsCustomActive] = React.useState(false)
     const [sliderValue, setSliderValue] = React.useState(0)
@@ -79,7 +79,7 @@ export default function GoalWight() {
                     }
                 </View>
                 <View style={{ margin: 20, }}>
-                    <AppButton title={"Next"} onPress={() => { console.log(customValue) }} />
+                    <AppButton title={"Next"} onPress={() => { navigation.navigate("Signup") }} />
                 </View>
             </View>
         </>

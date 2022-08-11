@@ -11,11 +11,11 @@ module.exports = (() => {
     };
     config.resolver = {
         ...resolver,
-        // assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
-        assetExts: [...resolver.assetExts, "cjs", "svg"],
+        assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
+        // assetExts: [...resolver.assetExts, "cjs", "svg"],
         sourceExts: [...resolver.sourceExts, "js", "jsx", "svg", "ts", "tsx", "cjs"],
     };
-    // config.resolver.assetExts.push("cjs");
+    config.resolver.assetExts.push("cjs");
 
     return config;
 })();

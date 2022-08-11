@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Image, TouchableOpacity, View, Text, ScrollView, Button } from "react-native";
+import { StyleSheet, View, ScrollView, } from "react-native";
 import * as Yup from "yup";
 import { Picker } from '@react-native-picker/picker';
 import Screen from "../../components/Screen";
@@ -8,17 +8,20 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 import AppText from "../../components/Text";
-const validationSchema = Yup.object().shape({
-    name: Yup.string().required().label("Name"),
-    age: Yup.string().required().min(2).label("age"),
-    gender: Yup.string().required().label("gender"),
-    weight: Yup.string().required().min(2).label("Weight")
+import colors from "../../config/colors";
+import TopWave1 from "../../components/TopWave1";
 
-});
-const data = ["Male", "Female", "not to tell"
-];
+// const validationSchema = Yup.object().shape({
+//     name: Yup.string().required().label("Name"),
+//     age: Yup.string().required().min(2).label("Age"),
+//     gender: Yup.string().required().label("Gender"),
+//     weight: Yup.string().required().min(2).label("Weight"),
+//     height: Yup.string().required().min(2).label("Height")
+
+// });
+const data = ["Male", "Female", "not to tell"];
 const heightUnits = ["cm", "ft"]; const weightUnits = ["kg", "lbs"];
-function SignUpScreen() {
+function ProfileDetails({ navigation }) {
     const config = {
         fontSize: 18,
         backgroundColor: '#fafafa',
@@ -35,7 +38,10 @@ function SignUpScreen() {
     const [isPickerShow, setIsPickerShow] = useState(false);
     const [date, setDate] = useState(new Date(Date.now()));
 
-    const [selectedValue, setSelectedValue] = useState("java");
+    const [selectedValue, setSelectedValue] = useState("");
+    const [weightUnit, setWeightUnit] = useState(true);
+    const [heightUnit, setHeightUnit] = useState(true);
+
     const showPicker = () => {
         setIsPickerShow(true);
     };
@@ -49,19 +55,19 @@ function SignUpScreen() {
     return (
         <ScrollView>
 
-            <Image style={{ width: "100%" }} source={require("../../assets/topwave1.png")} />
+            <TopWave1 />
             <View style={styles.container}>
                 <AppText style={styles.title} >Profile Details</AppText>
                 <Form
-                    initialValues={{ name: "", age: 0, gender: "", weight: 0 }}
-                    onSubmit={(values) => console.log(values)}
-                    validationSchema={validationSchema}
+                    initialValues={{ name: "", age: 0, gender: "", weight: 0, height: 0 }}
+                    onSubmit={(values) => { console.log("Pressed"); navigation.navigate("Activity") }}
+                // validationSchema={validationSchema}
                 >
                     <FormField
                         autoCapitalize="none"
                         autoCorrect={false}
                         name="name"
-                        placeholder="Enter your name"
+                        placeholder="Enter Your Name"
                         textContentType="emailAddress"
                     />
                     <FormField
@@ -69,21 +75,20 @@ function SignUpScreen() {
                         autoCorrect={false}
                         keyboardType="numeric"
                         name="age"
-                        placeholder="age"
+                        placeholder="Age"
 
                     />
-                   <View style={{ borderRadius: 4, borderWidth: 0, overflow: "hidden", padding: 0, backgroundColor: "pink",height:50 ,borderColor:"red"}}> 
-                   <Picker
-                        selectedValue={selectedValue}
-                        
-                        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                    >
-                        <Picker.Item label="Male" value="java" />
-                        <Picker.Item label="Female" value="js" />
-                    </Picker>
-                   </View>
-                    
-                
+                    <View style={{ borderRadius: 5, borderWidth: 1, padding: 4, backgroundColor: colors.light, height: 60, }}>
+                        <Picker
+                            selectedValue={selectedValue}
+                            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                        >
+                            <Picker.Item label="Male" value="Male" />
+                            <Picker.Item label="Female" value="Female" />
+                        </Picker>
+                    </View>
+
+
                     <View>
                         <View style={{ flexDirection: "row" }}>
                             <View style={{ flex: 1 }}>
@@ -91,22 +96,18 @@ function SignUpScreen() {
                                     autoCapitalize="none"
                                     autoCorrect={false}
                                     keyboardType="numeric"
-                                    name="weight"
-                                    disabled={true}
+                                    name="Date of Birth"
+                                    disabled={false}
                                     placeholder="Birthday"
                                     onPressOut={showPicker}
                                     showSoftInputOnFocus={false}
+                                    value={date.toDateString()}
 
                                 />
                             </View>
                         </View>
                     </View>
 
-
-                    
-                    
-                   
-                   
                     {isPickerShow && (
                         <DateTimePicker
                             value={date}
@@ -129,23 +130,23 @@ function SignUpScreen() {
 
                                 />
                             </View>
-                            <View style={{ flex: 0.5, padding: 10 }}>
-                            <View style={{ borderRadius: 4, borderWidth: 0, overflow: "hidden", padding: 0, backgroundColor: "pink",height:50 ,borderColor:"red",marginTop:5}}> 
-                   <Picker
-                        selectedValue={selectedValue}
-                        
-                        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                    >
-                        <Picker.Item label="KG" value="java" />
-                        <Picker.Item label="LBL" value="js" />
-                    </Picker>
-                   </View>
+                            <View style={{ flex: 0.5, paddingLeft: 10, paddingTop: 10 }}>
+                                <View style={{ borderRadius: 5, borderWidth: 1, padding: 4, backgroundColor: colors.light, height: 60, }}>
+                                    <Picker
+                                        selectedValue={weightUnit}
+
+                                        onValueChange={(itemValue, itemIndex) => setWeightUnit(itemValue)}
+                                    >
+                                        <Picker.Item label="kg" value="kg" />
+                                        <Picker.Item label="lbs" value="lbs" />
+                                    </Picker>
+                                </View>
                             </View>
                         </View>
                     </View>
                     <View>
                         <View style={{ flexDirection: "row" }}>
-                            <View style={{ flex: 1 }}>
+                            <View style={{ flex: 2 }}>
                                 <FormField
                                     autoCapitalize="none"
                                     autoCorrect={false}
@@ -155,26 +156,25 @@ function SignUpScreen() {
 
                                 />
                             </View>
-                            <View style={{ flex: 0.5, padding: 10 }}>
-                            <View style={{ borderRadius: 4, borderWidth: 0, overflow: "hidden", padding: 0, backgroundColor: "pink",height:50 ,borderColor:"red",marginTop:5}}> 
-                   <Picker
-                        selectedValue={selectedValue}
-                        
-                        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                    >
-                        <Picker.Item label="CM" value="java" />
-                        <Picker.Item label="FT" value="js" />
-                    </Picker>
-                   </View>
+                            <View style={{ flex: 1, paddingLeft: 10, paddingTop: 10 }}>
+                                <View style={{ borderRadius: 5, borderWidth: 1, padding: 4, backgroundColor: colors.light, height: 60, }}>
+                                    <Picker
+                                        selectedValue={heightUnit}
+
+                                        onValueChange={(itemValue, itemIndex) => setHeightUnit(itemValue)}
+                                    >
+                                        <Picker.Item label="cm" value="cm" />
+                                        <Picker.Item label="ft" value="ft" />
+                                    </Picker>
+                                </View>
                             </View>
                         </View>
                     </View>
                     <SubmitButton title="Next" />
                 </Form>
-              
+
             </View>
 
-            {/* <Image style={styles.bottomImage} source={require("../../assets/bottomwave.png")} /> */}
         </ScrollView>
 
     );
@@ -246,8 +246,8 @@ const styles = StyleSheet.create({
         borderColor: '#444',
         marginTop: 5,
     },
-   
+
 
 });
 
-export default SignUpScreen;
+export default ProfileDetails;

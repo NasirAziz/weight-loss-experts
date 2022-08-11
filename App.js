@@ -17,41 +17,37 @@ import Results from './screens/Results/Results';
 import PhoneAuth from './screens/PhoneAuth';
 
 import SignUpScreen from './screens/Signup/SignUp';
-import Onboarding from './screens/Onboarding/OnBoarding';
+import ProfileDetails from './screens/Signup/ProfileDetails';
+import OnboardingScreen from './screens/Onboarding/OnBoarding';
 import DietPlan from './screens/DietPlan/DietPlan';
-import DashBoard from './screens/Dashboard/DashBoard';
-
-
+import DietPlanInfo from './screens/DietPlan/DietPlanInfo';
+import HomeScreen from './screens/Home/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName='Results' screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Onboarding" component={Onboarding} />
-        <Stack.Screen name="Signup" component={SignUpScreen} />
+      <Stack.Navigator initialRouteName='OnboardingScreen' screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
+        <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
         <Stack.Screen name="DietPlan" component={DietPlan} />
+        <Stack.Screen name="DietPlanInfo" component={DietPlanInfo} />
+        <Stack.Screen name="Signup" component={SignUpScreen} />
 
-        <Stack.Screen name="DashBoard" component={DashBoard} />
-
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="PhoneAuth" component={PhoneAuth} />
-        <Stack.Screen name="Results" component={Results} />
         <Stack.Screen name="ExercisePlan" component={ExercisePlan} />
-        <Stack.Screen name="ExercoseVideo" component={ExerciseVideo} />
+        <Stack.Screen name="Results" component={Results} />
+        <Stack.Screen name="Activity" component={ActivityLevel} />
+        <Stack.Screen name="BMI" component={BMI} />
+        <Stack.Screen name="ExerciseVideo" component={ExerciseVideo} />
         <Stack.Screen name="BMR" component={BMR} />
         <Stack.Screen name="Calories" component={Calories} />
         <Stack.Screen name="BodyFat" component={BodyFat} />
-        <Stack.Screen name="BMI" component={BMI} />
-        <Stack.Screen name="Activity" component={ActivityLevel} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="GoalWeight" component={GoalWeight} />
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
-
-
-

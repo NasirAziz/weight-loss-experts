@@ -7,7 +7,7 @@ import Screen from '../components/Screen'
 import Boy from "../assets/boy-running.svg"
 import AppText from '../components/Text'
 
-export default function ExercisePlan() {
+export default function ExercisePlan({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
 
@@ -34,47 +34,49 @@ export default function ExercisePlan() {
 
             <View style={{ height: 0 }}></View>
             <Screen>
-                <BackButton />
-                <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", marginTop: 10, position: "absolute", top: 280, bottom: 0, left: 0, right: 0, }}>
-                    <AppText style={{ fontWeight: "bold" }}>Your Exercise Plan</AppText>
+                <View style={{ flex: 1, }}>
+
+                    <BackButton onPress={() => { navigation.pop() }} />
+                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", marginTop: 10, position: "absolute", top: 280, bottom: 0, left: 0, right: 0, }}>
+                        <AppText style={{ fontWeight: "bold" }}>Your Exercise Plan</AppText>
+                    </View>
+                    <ScrollView style={{ flex: 1, position: "absolute", top: 330, bottom: 0, left: 0, right: 0, }}>
+
+                        <TouchableOpacity onPress={() => { navigation.navigate('ExerciseVideo') }} activeOpacity={0} style={{
+                            marginHorizontal: 20,
+                        }}>
+                            <CardExercise title={"Beginner"} desc="This is a description of the exercise This is a description of the exercise This is a description of the exercise This is a description of the exercise" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => { navigation.navigate('ExerciseVideo') }} style={{
+                            marginHorizontal: 20,
+                        }}>
+                            <CardExercise title={"Intermediate"} desc="This is a description of the exercise This is a description of the exercise This is a description of the exercise This is a description of the exercise" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => { navigation.navigate('ExerciseVideo') }} style={{
+                            marginHorizontal: 20,
+                        }}>
+                            <CardExercise title={"Advance"} desc="This is a description of the exercise This is a description of the exercise This is a description of the exercise This is a description of the exercise" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => { navigation.navigate('ExerciseVideo') }} style={{
+                            marginHorizontal: 20,
+                        }}>
+                            <CardExercise title={"Expert"} desc="This is a description of the exercise This is a description of the exercise This is a description of the exercise This is a description of the exercise" />
+                        </TouchableOpacity>
+
+                    </ScrollView>
                 </View>
-                <ScrollView style={{ flex: 1, position: "absolute", top: 330, bottom: 0, left: 0, right: 0, }}>
 
-                    <Pressable onPress={() => console.log("Pressed")} activeOpacity={0} style={{
-                        marginHorizontal: 20,
-                    }}>
-                        <CardExercise title={"Beginner"} desc="This is a description of the exercise This is a description of the exercise This is a description of the exercise This is a description of the exercise" />
-                    </Pressable>
-
-                    <TouchableOpacity onPress={() => console.log("Pressed")} style={{
-                        marginHorizontal: 20,
-                    }}>
-                        <CardExercise title={"Intermediate"} desc="This is a description of the exercise This is a description of the exercise This is a description of the exercise This is a description of the exercise" />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => console.log("Pressed")} style={{
-                        marginHorizontal: 20,
-                    }}>
-                        <CardExercise title={"Advance"} desc="This is a description of the exercise This is a description of the exercise This is a description of the exercise This is a description of the exercise" />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => console.log("Pressed")} style={{
-                        marginHorizontal: 20,
-                    }}>
-                        <CardExercise title={"Expert"} desc="This is a description of the exercise This is a description of the exercise This is a description of the exercise This is a description of the exercise" />
-                    </TouchableOpacity>
-
-                </ScrollView>
             </Screen>
-            {/*<Screen>
-                <View style={{ flex: 1, position: "absolute", top: 280, bottom: 0, left: 0, right: 0, }}>
-                    <AppText>asdasdasd</AppText>
-                    {/* <ScrollView style={{ height: "200%" }}>
-                </View>
-            </Screen>
-        */}
+
         </View>
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+})

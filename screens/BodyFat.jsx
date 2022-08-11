@@ -51,9 +51,7 @@ export default function BodyFat({ navigation }) {
                             <TouchableOpacity style={{
                                 alignSelf: 'center',
                             }}
-                                onPress={() => {
-                                    navigation.navigate("BMI")
-                                }}
+                                onPress={() => { navigation.navigate('Results') }}
                             >
                                 <AppText style={styles.calculate}>Calculate</AppText>
                             </TouchableOpacity>

@@ -26,7 +26,7 @@ function LoginScreen({ navigation }) {
                 <AppText style={styles.title} >Sign in</AppText>
                 <Form
                     initialValues={{ email: "", password: "" }}
-                    onSubmit={(values) => console.log(values)} ////Perform Login auth logic here 
+                    onSubmit={(values) => navigation.navigate("HomeScreen")} ////Perform Login auth logic here 
                     validationSchema={validationSchema}
                 >
                     <FormField
@@ -50,13 +50,14 @@ function LoginScreen({ navigation }) {
                     <AppText style={styles.desc} >Forgot Password? Reset from <AppText style={styles.link} >here</AppText></AppText>
 
                     <SubmitButton title="Sign in"
-                        onSubmit={
-                            () => {
-                                console.log("Pressed")
-                                navigation.navigate('Activity')
-                            }
+                    // onSubmit={
+                    //     () => {
+                    //         console.log("Pressed")
+                    //         navigation.navigate('Activity')
+                    //     }
 
-                        } />
+                    // } 
+                    />
                 </Form>
                 <AppText style={styles.signup} >Don't have an account? <AppText style={styles.link} >Sign up</AppText></AppText>
                 <View style={styles.iconsContainer}>

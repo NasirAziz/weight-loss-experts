@@ -10,7 +10,7 @@ import SwitchButton from '../components/SwitchButton'
 import AppTextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 
-export default function BMR() {
+export default function BMR({ navigation }) {
     const [isMetricActive, setIsMetricActive] = React.useState(true)
     const [isImperialActice, setIsImperialActice] = React.useState(false)
     const [height, setHeight] = React.useState(0)
@@ -22,7 +22,7 @@ export default function BMR() {
             <TopWave1 />
             <Screen >
                 <View style={styles.container} >
-                    <BackButton onPress={() => { }} />
+                    <BackButton onPress={() => { navigation.pop() }} />
                     <AppText style={styles.text}>{"START Calculating\nYOUR BMR"}</AppText>
 
                     <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -49,8 +49,9 @@ export default function BMR() {
                         bottom: 40,
                         alignSelf: 'center',
                     }}
-                        onPres={() => { }}
+                        onPress={() => { navigation.navigate('Results') }}
                     >
+
                         <AppText style={styles.calculate}>Calculate</AppText>
                     </TouchableOpacity>
 

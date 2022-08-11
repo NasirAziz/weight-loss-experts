@@ -40,15 +40,15 @@ export default function BMI({ navigation }) {
 
                     </View>
 
-                    <Pressable style={{
+                    <TouchableOpacity style={{
                         position: 'absolute',
                         bottom: 80,
                         alignSelf: 'center',
                     }}
-                        onPress={() => { console.log("Pressed"); navigation.navigate('BodyFat') }}
+                        onPress={() => { navigation.navigate('Results') }}
                     >
-                        <AppText onPres={() => { console.log("Pressed"); navigation.navigate('BodyFat') }} style={styles.calculate}>Calculate</AppText>
-                    </Pressable>
+                        <AppText style={styles.calculate}>Calculate</AppText>
+                    </TouchableOpacity>
 
                 </View>
             </Screen>

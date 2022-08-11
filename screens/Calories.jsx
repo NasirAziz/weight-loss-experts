@@ -10,7 +10,7 @@ import SwitchButton from '../components/SwitchButton'
 import AppTextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 
-export default function Calories() {
+export default function Calories({ navigation }) {
     const [isMetricActive, setIsMetricActive] = React.useState(true)
     const [isImperialActice, setIsImperialActice] = React.useState(false)
     const [height, setHeight] = React.useState(0)
@@ -22,7 +22,7 @@ export default function Calories() {
             <TopWave1 />
             <Screen >
                 <View style={styles.container} >
-                    <BackButton onPress={() => { }} />
+                    <BackButton onPress={() => { navigation.pop() }} />
                     <AppText style={styles.text}>{"START Calculating\nYOUR Calories"}</AppText>
 
                     <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -49,7 +49,7 @@ export default function Calories() {
                         bottom: 40,
                         alignSelf: 'center',
                     }}
-                        onPres={() => { }}
+                        onPress={() => { navigation.navigate('Results') }}
                     >
                         <AppText style={styles.calculate}>Calculate</AppText>
                     </TouchableOpacity>

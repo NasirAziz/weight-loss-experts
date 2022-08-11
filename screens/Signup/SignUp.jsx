@@ -6,22 +6,23 @@ import Screen from "../../components/Screen";
 import { Form, FormField, SubmitButton } from "../../components/forms";
 import AppText from "../../components/Text";
 import BottomWave from "../../components/BottomWave";
+import TopWave1 from "../../components/TopWave1";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().required().email().label("Email"),
     password: Yup.string().required().min(6).label("Password"),
 });
 
-function SignUpScreen() {
+function SignUpScreen({ navigation }) {
     return (
         <>
-            <Image style={{ width: "100%" }} source={require("../../assets/topwave1.png")} />
+            <TopWave1 />
             <Screen style={styles.container}>
                 <Image style={styles.logo} source={require("../../assets/logo2.png")} />
                 <AppText style={styles.title} >Sign Up</AppText>
                 <Form
                     initialValues={{ email: "", password: "" }}
-                    onSubmit={(values) => console.log(values)}
+                    onSubmit={(values) => navigation.navigate("HomeScreen")}
                     validationSchema={validationSchema}
                 >
                     <FormField

@@ -8,12 +8,12 @@ import TopWave1 from '../../components/TopWave1';
 import BottomWave from '../../components/BottomWave';
 import BackButton from '../../components/BackButton';
 
-export default function Results({ text, result, unit }) {
+export default function Results({ text, result, unit, navigation }) {
     return (
         <>
             <TopWave1 />
             <Screen>
-                <BackButton />
+                <BackButton onPress={() => navigation.pop()} />
                 <View style={{ padding: 20, marginBottom: 50 }} >
                     <Text style={styles.text}>{{ text } && "Your Results Suggests That You Are Healthy Weight"}</Text>
                 </View>

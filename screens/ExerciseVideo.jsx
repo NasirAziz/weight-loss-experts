@@ -8,7 +8,7 @@ import TopWave2 from '../components/TopWave2'
 import BackButton from '../components/BackButton'
 import Screen from '../components/Screen'
 
-export default function ExerciseVideo() {
+export default function ExerciseVideo({ navigation }) {
     const video = React.useRef(null);
     const [status, setStatus] = React.useState({});
     return (
@@ -18,7 +18,7 @@ export default function ExerciseVideo() {
 
             <View style={{ height: 0 }}></View>
             <Screen>
-                <BackButton />
+                <BackButton onPress={() => navigation.pop()} />
                 <View style={styles.container}>
                     <Video
                         ref={video}

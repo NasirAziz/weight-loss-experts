@@ -7,7 +7,6 @@ import {
   View,
   Text,
   StatusBar,
-  TouchableOpacity,
   Dimensions,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
@@ -111,7 +110,7 @@ const OnboardingScreen = ({ navigation }) => {
         <View style={{ marginBottom: 20 }}>
           {currentSlideIndex == slides.length - 1 ? (
             <View>
-              <Button title={"Get Started"} onPress={() => navigation.replace('Signup')} />
+              <Button title={"Get Started"} onPress={() => navigation.replace('ProfileDetails')} />
             </View>
           ) : (
             <View style={{ flexDirection: 'row' }}>
@@ -159,7 +158,7 @@ const OnboardingScreen = ({ navigation }) => {
 
 
       </View>
-      <StatusBar backgroundColor={"green"} />
+      <StatusBar />
       <FlatList
         ref={ref}
         onMomentumScrollEnd={updateCurrentSlideIndex}
