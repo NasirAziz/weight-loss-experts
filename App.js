@@ -23,13 +23,14 @@ import DietPlan from './screens/DietPlan/DietPlan';
 import DietPlanInfo from './screens/DietPlan/DietPlanInfo';
 import HomeScreen from './screens/Home/HomeScreen';
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName='OnboardingScreen' screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
+      <Stack.Navigator initialRouteName='Onboarding' screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
         <Stack.Screen name="DietPlan" component={DietPlan} />
         <Stack.Screen name="DietPlanInfo" component={DietPlanInfo} />

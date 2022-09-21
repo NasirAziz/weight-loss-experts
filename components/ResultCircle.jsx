@@ -1,20 +1,33 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Easing, StyleSheet, View, } from 'react-native'
 import React from 'react'
+import AnimatedNumbers from 'react-native-animated-numbers';
 
 import AppText from './Text'
 import colors from '../config/colors';
+import defaultStyles from "../config/styles";
 
 
 export default function ResultCircle({ result, unit, style }) {
+    const [animateToNumber, setAnimateToNumber] = React.useState(0);
+
+
+    const increase = () => {
+        setAnimateToNumber(animateToNumber + result);
+    };
+
     return (
         <View style={styles.container}>
-            <View style={[style, styles.circle]} >
-                <Text style={styles.text}>
-                    {result}
-                </Text>
+
+            <View style={[style, styles.circle]} onLayout={increase}>
+                <AnimatedNumbers
+                    animateToNumber={animateToNumber}
+                    // easing={Easing.elastic(1.2)}
+                    fontStyle={[defaultStyles.text, { color: colors.white, fontSize: 64, fontWeight: 'bold', letterSpacing: 3 }]}
+                />
                 <AppText style={styles.unit}>
                     {unit}
                 </AppText>
+
             </View>
         </View>
     )
@@ -34,14 +47,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         // flex: 1,
         // display: "flex",
-    }, text: {
-        fontSize: 55,
-        fontWeight: 'bold',
-        color: colors.light,
-        textTransform: 'uppercase',
-    }, unit: {
+    },
+    unit: {
         fontSize: 18,
-        color: colors.light,
+        color: colors.white,
         fontWeight: 'bold',
 
     }
