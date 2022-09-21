@@ -14,6 +14,10 @@ const { width, height } = Dimensions.get('window');
 import Button from '../../components/Button';
 const COLORS = { primary: '#282534', white: '#fff' };
 
+import { Suggestic } from "@suggestic/sdk";
+
+
+
 const slides = [
   {
     id: '1',
@@ -51,7 +55,13 @@ const Slide = ({ item }) => {
   );
 };
 
+async function abc() {
+  const client = new Suggestic("e4a2aaf2883e9a174b8edd44793dabc657418db0");
+  const va = await client.createUser({ name: "Nasir", email: "nasiraziz91@gmail.com", emailPasswordNotification: true, phone: "", extraData: "", program: "", restrictions: "", })
+  console.log(va)
+}
 const OnboardingScreen = ({ navigation }) => {
+  abc()
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const ref = React.useRef();
   const updateCurrentSlideIndex = e => {
