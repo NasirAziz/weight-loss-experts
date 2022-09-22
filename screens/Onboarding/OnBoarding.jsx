@@ -13,11 +13,9 @@ import Svg, { Path } from 'react-native-svg';
 const { width, height } = Dimensions.get('window');
 import Button from '../../components/Button';
 const COLORS = { primary: '#282534', white: '#fff' };
-
-import { Suggestic } from "@suggestic/sdk";
-
-
-
+/////////////////////////////////////////////
+// import { gql, ApolloClient, InMemoryCache } from '@apollo/client';
+/////////////////////////////////////////////
 const slides = [
   {
     id: '1',
@@ -55,13 +53,41 @@ const Slide = ({ item }) => {
   );
 };
 
-async function abc() {
-  const client = new Suggestic("e4a2aaf2883e9a174b8edd44793dabc657418db0");
-  const va = await client.createUser({ name: "Nasir", email: "nasiraziz91@gmail.com", emailPasswordNotification: true, phone: "", extraData: "", program: "", restrictions: "", })
-  console.log(va)
-}
+// import { gql, useMutation } from '@apollo/client'
 const OnboardingScreen = ({ navigation }) => {
-  abc()
+  //   const abc = () => {
+  //     const CREATE_USER_MUTATION = gql`
+  //   mutation createUser (
+  //     $name: String!
+  //     $email: String! 
+  //     $emailPasswordNotification: Boolean
+  //   ){
+  //     createUser(
+  //       name:$name
+  //       email:$email
+  //       emailPasswordNotification:$emailPasswordNotification
+  //       ){
+  //         success
+  //         message
+  //         user {
+  //           id
+  //           databaseId
+  //         }
+  //       }
+  //   }
+  // `
+
+  //     const [createUserM] = useMutation(CREATE_USER_MUTATION, {
+  //       variables: { name: "Nasir", email: "nasiraziz08@gmail.com", emailPasswordNotification: true },
+  //       // to observe what the mutation response returns
+  //       onCompleted: data => {
+  //         console.log(data);
+  //       }
+  //     });
+
+  //     createUserM()
+  //   }
+  //   abc()
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const ref = React.useRef();
   const updateCurrentSlideIndex = e => {
