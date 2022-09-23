@@ -33,6 +33,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   headers: {
     "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
+    // "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
   },
 });
 const Stack = createNativeStackNavigator();

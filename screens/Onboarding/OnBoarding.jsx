@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import GENERATE_MEAL_PLAN from '../../Backend/Suggestic/Mutaions/generateMealPlan';
 const { width, height } = Dimensions.get('window');
 import Button from '../../components/Button';
 const COLORS = { primary: '#282534', white: '#fff' };
@@ -52,7 +53,24 @@ const Slide = ({ item }) => {
 };
 
 
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 const OnboardingScreen = ({ navigation }) => {
+
+  // const client = new ApolloClient({
+  //   uri: 'https://production.suggestic.com/graphql',
+  //   cache: new InMemoryCache(),
+  //   headers: {
+  //     "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
+  //     "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
+  //   },
+  // });
+
+  // client.mutate({
+  //   variables: { includeFavorites: true, ignoreLock: true, maxNumOfServings: 4, breakfastDistribution: 0.2, lunchDistribution: 0.3, dinnerDistribution: 0.3, snackDistribution: 0.2 },
+  //   mutation: GENERATE_MEAL_PLAN,
+  // })
+  //   .then(result => { console.log(result) })
+  //   .catch(error => { console.log(error.message) });
 
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const ref = React.useRef();
