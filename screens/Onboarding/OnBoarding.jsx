@@ -13,9 +13,7 @@ import Svg, { Path } from 'react-native-svg';
 const { width, height } = Dimensions.get('window');
 import Button from '../../components/Button';
 const COLORS = { primary: '#282534', white: '#fff' };
-/////////////////////////////////////////////
-// import { gql, ApolloClient, InMemoryCache } from '@apollo/client';
-/////////////////////////////////////////////
+
 const slides = [
   {
     id: '1',
@@ -53,41 +51,9 @@ const Slide = ({ item }) => {
   );
 };
 
-// import { gql, useMutation } from '@apollo/client'
+
 const OnboardingScreen = ({ navigation }) => {
-  //   const abc = () => {
-  //     const CREATE_USER_MUTATION = gql`
-  //   mutation createUser (
-  //     $name: String!
-  //     $email: String! 
-  //     $emailPasswordNotification: Boolean
-  //   ){
-  //     createUser(
-  //       name:$name
-  //       email:$email
-  //       emailPasswordNotification:$emailPasswordNotification
-  //       ){
-  //         success
-  //         message
-  //         user {
-  //           id
-  //           databaseId
-  //         }
-  //       }
-  //   }
-  // `
 
-  //     const [createUserM] = useMutation(CREATE_USER_MUTATION, {
-  //       variables: { name: "Nasir", email: "nasiraziz08@gmail.com", emailPasswordNotification: true },
-  //       // to observe what the mutation response returns
-  //       onCompleted: data => {
-  //         console.log(data);
-  //       }
-  //     });
-
-  //     createUserM()
-  //   }
-  //   abc()
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const ref = React.useRef();
   const updateCurrentSlideIndex = e => {
