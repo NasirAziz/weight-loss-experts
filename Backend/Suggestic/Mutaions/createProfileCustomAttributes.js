@@ -1,26 +1,16 @@
 import { gql } from '@apollo/client'
 
 const CREATE_PROFILE_CUSTOM_ATTRIBUTES = gql`
-    mutation createProfileCustomAttributes (
-      $attributes: [        
-        name: String
-        dataType: AttrDataType!
-        value: GenericScalar!
-        category: String
-        timestamp: Float
-    ]
-    ){
-      createProfileCustomAttributes(
-        attributes: [$attributes]
-        ){
-          success
-          errors {
-            field
-            messages
-            }
-          }
-        }
+mutation createProfileCustomAttributes($varr:[ProfileCustomAttribute!]!){
+  createProfileCustomAttributes(
+    attributes: $varr) {
+    success
+    errors {
+      field
+      messages
     }
+  }
+}
   `;
 
 /* 

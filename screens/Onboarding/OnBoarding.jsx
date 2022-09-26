@@ -10,7 +10,6 @@ import {
   Dimensions,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import GENERATE_MEAL_PLAN from '../../Backend/Suggestic/Mutaions/generateMealPlan';
 const { width, height } = Dimensions.get('window');
 import Button from '../../components/Button';
 const COLORS = { primary: '#282534', white: '#fff' };
@@ -53,24 +52,37 @@ const Slide = ({ item }) => {
 };
 
 
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloError, InMemoryCache } from '@apollo/client';
+import GENERATE_MEAL_PLAN from '../../Backend/Suggestic/Mutaions/generateMealPlan';
+import CREATE_PROFILE_CUSTOM_ATTRIBUTES from '../../Backend/Suggestic/Mutaions/createProfileCustomAttributes';
 const OnboardingScreen = ({ navigation }) => {
 
-  // const client = new ApolloClient({
-  //   uri: 'https://production.suggestic.com/graphql',
-  //   cache: new InMemoryCache(),
-  //   headers: {
-  //     "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
-  //     "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
-  //   },
-  // });
+  const client = new ApolloClient({
+    uri: 'https://production.suggestic.com/graphql',
+    cache: new InMemoryCache(),
+    headers: {
+      "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
+      "sg-user": "25180fc9-0544-477a-9574-33f1674156f2"
+    },
+  });
 
-  // client.mutate({
-  //   variables: { includeFavorites: true, ignoreLock: true, maxNumOfServings: 4, breakfastDistribution: 0.2, lunchDistribution: 0.3, dinnerDistribution: 0.3, snackDistribution: 0.2 },
-  //   mutation: GENERATE_MEAL_PLAN,
-  // })
-  //   .then(result => { console.log(result) })
-  //   .catch(error => { console.log(error.message) });
+  client.mutate({
+    variables:
+    {
+      varr: [
+        {
+          name: "BMR",
+          value: 20.0,
+          dataType: "FLOAT",
+          category: "Genetics",
+          timestamp: 507482179.234
+        }
+      ]
+    },
+    mutation: CREATE_PROFILE_CUSTOM_ATTRIBUTES,
+  })
+    .then(result => { console.log(result) })
+    .catch(error => { console.log(JSON.stringify(error, null, 2)) });
 
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const ref = React.useRef();
