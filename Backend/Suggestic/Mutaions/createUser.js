@@ -7,6 +7,7 @@ const CREATE_USER_MUTATION = gql`
       $emailPasswordNotification: Boolean
       $phone: String
       $password: String
+      $birthdate:Date
     ){
       createUser(
         name:$name
@@ -14,6 +15,7 @@ const CREATE_USER_MUTATION = gql`
         emailPasswordNotification:$emailPasswordNotification
         phone: $phone
         password: $password
+        birthdate:$birthdate
         ){
           success
           message
