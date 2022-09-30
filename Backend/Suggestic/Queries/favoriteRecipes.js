@@ -10,6 +10,12 @@ const FAVORITE_RECIPES = gql`
         totalTimeInSeconds
         name
         rating
+        adherenceDetails{
+          score
+          color
+          isRecommended
+          title
+        }
         numberOfServings
         ingredientLines
         ingredients {

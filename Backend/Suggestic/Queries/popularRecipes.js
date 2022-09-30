@@ -12,6 +12,12 @@ const POPULAR_RECIPES = gql`
         rating
         numberOfServings
         ingredientLines
+        adherenceDetails{
+          score
+          color
+          isRecommended
+          title
+        }
         ingredients {
           name
         }
