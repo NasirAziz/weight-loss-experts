@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 // import ActivityLevel from './screens/ActivityLevel/ActivityLevel';
 // import BMI from './screens/BMI';
@@ -57,12 +57,13 @@ export default function App() {
 
   return (
     <ApolloProvider client={client}>
-      <NavigationContainer theme={navigationTheme}>
-        <Stack.Navigator initialRouteName='RecipeHome' screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="RecipeHome" component={RecipeHome} />
-          <Stack.Screen name="RecipeDetails" component={RecipeDetails} />
-          <Stack.Screen name="RecipeSearchResult" component={RecipeSearchResult} />
-          {/* <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <RootSiblingParent>
+        <NavigationContainer theme={navigationTheme}>
+          <Stack.Navigator initialRouteName='RecipeHome' screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="RecipeHome" component={RecipeHome} />
+            <Stack.Screen name="RecipeDetails" component={RecipeDetails} />
+            <Stack.Screen name="RecipeSearchResult" component={RecipeSearchResult} />
+            {/* <Stack.Screen name="Onboarding" component={OnboardingScreen} />
           <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
           <Stack.Screen name="DietPlan" component={DietPlan} />
           <Stack.Screen name="DietPlanInfo" component={DietPlanInfo} />
@@ -80,8 +81,9 @@ export default function App() {
           <Stack.Screen name="BodyFat" component={BodyFat} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="GoalWeight" component={GoalWeight} /> */}
-        </Stack.Navigator>
-      </NavigationContainer>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </RootSiblingParent>
     </ApolloProvider>
   );
 }

@@ -12,6 +12,7 @@ import Screen from "../../components/Screen"
 import FAVORITE_RECIPES from '../../Backend/Suggestic/Queries/favoriteRecipes';
 import ADD_TO_USER_FAVORITE from '../../Backend/Suggestic/Mutaions/addTouserFavorite';
 import RECIPE_SEARCH from '../../Backend/Suggestic/Queries/recipeSearch';
+import Toast from 'react-native-root-toast';
 
 const client2 = new ApolloClient({
     uri: 'https://production.suggestic.com/graphql',
@@ -68,9 +69,33 @@ function PopularRecipes({ navigation }) {
                     <Pressable onPress={() => navigation.navigate("RecipeDetails", { item: item.node })}>
                         <Card onPress={() => {
 
-                            client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
-                                client2.resetStore()
-                            }).catch((err) => console.log(JSON.stringify(err, null, 2)))
+                            client2.mutate({
+                                mutation: ADD_TO_USER_FAVORITE,
+                                variables: { recipeId: item.node.databaseId }
+                            })
+                                .then((data) => {
+                                    client2.resetStore()
+                                    let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                        duration: Toast.durations.SHORT,
+                                        position: Toast.positions.BOTTOM,
+                                        shadow: true,
+                                        animation: true,
+                                        hideOnPress: true,
+                                        delay: 0,
+                                        onShow: () => {
+                                            // calls on toast\`s appear animation start
+                                        },
+                                        onShown: () => {
+                                            // calls on toast\`s appear animation end.
+                                        },
+                                        onHide: () => {
+                                            // calls on toast\`s hide animation start.
+                                        },
+                                        onHidden: () => {
+                                            // calls on toast\`s hide animation end.
+                                        }
+                                    });
+                                }).catch((err) => console.log(JSON.stringify(err, null, 2)))
 
                         }} isUserFav={item.node.isUserFavorite} title={item.node.name} image={item.node.mainImage} subTitle={item.node.author} />
                     </Pressable>
@@ -113,6 +138,27 @@ function FavoriteRecipes({ navigation }) {
 
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
+
+                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                    delay: 0,
+                                    onShow: () => {
+                                        // calls on toast\`s appear animation start
+                                    },
+                                    onShown: () => {
+                                        // calls on toast\`s appear animation end.
+                                    },
+                                    onHide: () => {
+                                        // calls on toast\`s hide animation start.
+                                    },
+                                    onHidden: () => {
+                                        // calls on toast\`s hide animation end.
+                                    }
+                                });
                             }).catch((err) => console.log(JSON.stringify(err, null, 2)))
 
                         }} isUserFav={item.node.isUserFavorite} title={item.node.name} image={item.node.mainImage} subTitle={item.node.author} />
@@ -156,6 +202,27 @@ function BreakfastRecipes({ navigation }) {
 
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
+
+                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                    delay: 0,
+                                    onShow: () => {
+                                        // calls on toast\`s appear animation start
+                                    },
+                                    onShown: () => {
+                                        // calls on toast\`s appear animation end.
+                                    },
+                                    onHide: () => {
+                                        // calls on toast\`s hide animation start.
+                                    },
+                                    onHidden: () => {
+                                        // calls on toast\`s hide animation end.
+                                    }
+                                });
                             }).catch((err) => console.log(JSON.stringify(err, null, 2)))
 
                         }} isUserFav={item.node.isUserFavorite} title={item.node.name} image={item.node.mainImage} subTitle={item.node.author} />
@@ -197,6 +264,27 @@ function LunchRecipes({ navigation }) {
 
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
+
+                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                    delay: 0,
+                                    onShow: () => {
+                                        // calls on toast\`s appear animation start
+                                    },
+                                    onShown: () => {
+                                        // calls on toast\`s appear animation end.
+                                    },
+                                    onHide: () => {
+                                        // calls on toast\`s hide animation start.
+                                    },
+                                    onHidden: () => {
+                                        // calls on toast\`s hide animation end.
+                                    }
+                                });
                             }).catch((err) => console.log(JSON.stringify(err, null, 2)))
 
                         }} isUserFav={item.node.isUserFavorite} title={item.node.name} image={item.node.mainImage} subTitle={item.node.author} />
@@ -238,6 +326,27 @@ function DinnerRecipes({ navigation }) {
 
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
+
+                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                    delay: 0,
+                                    onShow: () => {
+                                        // calls on toast\`s appear animation start
+                                    },
+                                    onShown: () => {
+                                        // calls on toast\`s appear animation end.
+                                    },
+                                    onHide: () => {
+                                        // calls on toast\`s hide animation start.
+                                    },
+                                    onHidden: () => {
+                                        // calls on toast\`s hide animation end.
+                                    }
+                                });
 
                             }).catch((err) => console.log(JSON.stringify(err, null, 2)))
 
@@ -281,6 +390,27 @@ function SnackRecipes({ navigation }) {
 
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
+
+                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                    delay: 0,
+                                    onShow: () => {
+                                        // calls on toast\`s appear animation start
+                                    },
+                                    onShown: () => {
+                                        // calls on toast\`s appear animation end.
+                                    },
+                                    onHide: () => {
+                                        // calls on toast\`s hide animation start.
+                                    },
+                                    onHidden: () => {
+                                        // calls on toast\`s hide animation end.
+                                    }
+                                });
                             }).catch((err) => console.log(JSON.stringify(err, null, 2)))
 
                         }} isUserFav={item.node.isUserFavorite} title={item.node.name} image={item.node.mainImage} subTitle={item.node.author} />
@@ -307,7 +437,16 @@ function SnackRecipes({ navigation }) {
 
 
 export default function RecipeHome({ navigation }) {
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+            client2.resetStore()
+        });
 
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
     return (
         <Screen>
             <View style={{ backgroundColor: colors.light, flex: 1, }}>

@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { StyleSheet, View, Image, ScrollView, Pressable } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMutation, ApolloClient, InMemoryCache, } from '@apollo/client';
-import { Snackbar } from 'react-native-paper';
+import Toast from 'react-native-root-toast';
+
 
 import AppText from "../../components/Text"
 import AppButton from "../../components/Button"
@@ -22,25 +23,6 @@ const client2 = new ApolloClient({
 });
 
 
-function MySnackbar({ msg, visible2 }) {
-    const [visible, setVisible] = React.useState(visible2);
-
-    const onDismissSnackBar = () => setVisible(false);
-    return (
-        <Snackbar
-            visible={visible}
-            onDismiss={onDismissSnackBar}
-            action={{
-                label: 'Undo',
-                onPress: () => {
-                    // Do something
-                },
-            }}>
-            {msg}
-        </Snackbar>
-    )
-}
-
 function FavIcon({ isFav, id }) {
     const [isUserFav, setIsUSerFav] = useState(isFav)
     return (
@@ -50,7 +32,26 @@ function FavIcon({ isFav, id }) {
                     .then((data) => {
                         client2.resetStore()
                         setIsUSerFav(data.data.userFavoriteRecipe.isUserFavorite)
-                        console.log(data.data.userFavoriteRecipe.isUserFavorite)
+                        let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.BOTTOM,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                            delay: 0,
+                            onShow: () => {
+                                // calls on toast\`s appear animation start
+                            },
+                            onShown: () => {
+                                // calls on toast\`s appear animation end.
+                            },
+                            onHide: () => {
+                                // calls on toast\`s hide animation start.
+                            },
+                            onHidden: () => {
+                                // calls on toast\`s hide animation end.
+                            }
+                        });
                     }).catch((err) => console.log(JSON.stringify(err, null, 2)))
             }}>
                 <MaterialCommunityIcons name="heart" size={34} color={isUserFav ? "red" : "grey"} />
@@ -66,6 +67,26 @@ export default function RecipeDetails({ route }) {
         variables: { recipeId: item.databaseId },
         onCompleted: data => {
             console.log(data);
+            let toast = Toast.show(data.addToShoppingList.message, {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                delay: 0,
+                onShow: () => {
+                    // calls on toast\`s appear animation start
+                },
+                onShown: () => {
+                    // calls on toast\`s appear animation end.
+                },
+                onHide: () => {
+                    // calls on toast\`s hide animation start.
+                },
+                onHidden: () => {
+                    // calls on toast\`s hide animation end.
+                }
+            });
         }
     })
 
