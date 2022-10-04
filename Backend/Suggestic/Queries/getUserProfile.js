@@ -18,7 +18,11 @@ const GET_USER_PROFILE = gql`
             programName
             language
             restrictions {
+                id
                 name
+                isOnProgram
+                subcategory
+                slugname 
             }
             dailyCaloricIntakeGoal
             caloricDifference
