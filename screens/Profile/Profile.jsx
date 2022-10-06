@@ -28,7 +28,7 @@ export default function Profile({ navigation }) {
                 <ProfileOptionsItem icon={"cancel"} text={"Food Preferences"} onPress={() => { navigation.navigate("FoodPreferences") }} />
                 <View style={{ alignSelf: "center", width: "90%", backgroundColor: "#D3D3D3", height: 1 }} />
 
-                <ProfileOptionsItem icon={"bullseye-arrow"} text={"Weight Goals"} onPress={() => { }} />
+                <ProfileOptionsItem icon={"bullseye-arrow"} text={"Weight Goals"} onPress={() => { navigation.navigate("WeightGoals") }} />
                 {/* <View style={{ alignSelf: "center", width: "90%", backgroundColor: "#D3D3D3", height: 1 }} /> */}
                 <View style={{ width: "100%", backgroundColor: "#f1f1f1", height: 30 }} />
 

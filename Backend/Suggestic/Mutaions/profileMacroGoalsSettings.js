@@ -3,14 +3,14 @@ import { gql } from '@apollo/client'
 
 const PROFILE_MACRO_GOALS_SETTINGS = gql`
     mutation profileMacroGoalsSettings (
-      $goalsOn: Boolean
-      $biologicalSex: BiologicalSex
-      $birthdate: Date
-      $height: Float
-      $startingWeight: Float      
-      $targetWeight: Float
-      $weeklyWeightGoal: WeeklyWeightGoal
-      $activityLevel: ActivityLevel
+      $goalsOn: Boolean!
+      $biologicalSex: BiologicalSex!
+      $birthdate: Date!
+      $height: Float!
+      $startingWeight: Float!    
+      $targetWeight: Float!
+      $weeklyWeightGoal: WeeklyWeightGoal!
+      $activityLevel: ActivityLevel!
     ){
       profileMacroGoalsSettings(
       goalsOn: $goalsOn

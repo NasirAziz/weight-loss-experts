@@ -38,11 +38,11 @@ function AppPicker({
               style={styles.icon}
             />
           )}
-          {selectedItem ? (
-            <Text style={styles.text}>{selectedItem.label}</Text>
-          ) : (
-            <Text style={styles.placeholder}>{placeholder}</Text>
-          )}
+
+          <Text style={styles.placeholder}>{placeholder}</Text>
+
+          <Text style={styles.text}>{selectedItem.label}</Text>
+
 
           <MaterialCommunityIcons
             name="chevron-down"
@@ -78,20 +78,24 @@ function AppPicker({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: defaultStyles.colors.light,
-    borderRadius: 25,
+    borderRadius: 5,
     flexDirection: "row",
     padding: 15,
-    marginVertical: 10,
+    marginVertical: 2,
   },
   icon: {
     marginRight: 10,
   },
   placeholder: {
     color: defaultStyles.colors.medium,
+    fontSize: 16,
     flex: 1,
   },
   text: {
     flex: 1,
+    textAlign: "right",
+    marginEnd: 10,
+    fontSize: 16
   },
 });
 

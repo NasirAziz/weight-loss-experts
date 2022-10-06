@@ -30,6 +30,7 @@ import RecipeSearchResult from './screens/RecipeSearchResult/RecipeSearchResult'
 import Profile from './screens/Profile/Profile';
 import EditProfile from './screens/Profile/EditProfile';
 import FoodPreferences from './screens/Profile/FoodPreferences';
+import WeightGoals from './screens/Profile/WeightGoals';
 
 
 
@@ -69,6 +70,7 @@ export default function App() {
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="FoodPreferences" component={FoodPreferences} />
+            <Stack.Screen name="WeightGoals" component={WeightGoals} />
             {/* <Stack.Screen name="Onboarding" component={OnboardingScreen} />
           <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
           <Stack.Screen name="DietPlan" component={DietPlan} />
