@@ -11,6 +11,7 @@ const PROFILE_MACRO_GOALS_SETTINGS = gql`
       $targetWeight: Float!
       $weeklyWeightGoal: WeeklyWeightGoal!
       $activityLevel: ActivityLevel!
+      $isImperial:Boolean
     ){
       profileMacroGoalsSettings(
       goalsOn: $goalsOn
@@ -21,6 +22,7 @@ const PROFILE_MACRO_GOALS_SETTINGS = gql`
       targetWeight: $targetWeight
       weeklyWeightGoal: $weeklyWeightGoal
       activityLevel: $activityLevel
+      isImperial:$isImperial
         ){
             success
             bmr 

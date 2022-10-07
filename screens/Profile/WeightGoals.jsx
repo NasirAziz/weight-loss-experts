@@ -278,6 +278,8 @@ export default function WeightGoals({ navigation }) {
                 <AppButton title={"Save"} onPress={() => {
                     update({
                         variables: {
+                            isImperial: isImperial,
+
                             goalsOn: selectGoalsOn,
                             biologicalSex: selectedSex,
                             birthdate: selectedBirthday,
