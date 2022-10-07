@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Switch, Text, View, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useQuery, useMutation, ApolloClient, InMemoryCache, } from '@apollo/client';
-import { CommonActions } from '@react-navigation/native';
+import { useQuery, useMutation, ApolloClient, InMemoryCache, NormalizedCacheObject, } from '@apollo/client';
 
 import defaultStyles from "../../config/styles";
 import colors from '../../config/colors';
@@ -77,9 +76,9 @@ export default function WeightGoals({ navigation }) {
             selectedTargetWeight = data.myProfile.targetWeight
             selectedCurrentWeight = data.myProfile.startingWeight
             if (data.myProfile.isImperial) {
-                selectedHeight = (parseFloat(selectedHeight) * 3.281).toFixed(1)
-                selectedCurrentWeight = (parseFloat(selectedCurrentWeight) * 2.205).toFixed(1)
-                selectedTargetWeight = (parseFloat(selectedTargetWeight) * 2.205).toFixed(1)
+                selectedHeight = (parseFloat(selectedHeight) * 3.281).toFixed(0)
+                selectedCurrentWeight = (parseFloat(selectedCurrentWeight) * 2.205).toFixed(0)
+                selectedTargetWeight = (parseFloat(selectedTargetWeight) * 2.205).toFixed(0)
 
                 setHeight(selectedHeight) //convert meter to feet
                 setTargetWeight(selectedTargetWeight)//convert incoming kg to pounds
@@ -88,9 +87,9 @@ export default function WeightGoals({ navigation }) {
 
 
             } else {
-                selectedHeight = (parseFloat(selectedHeight) * 100).toFixed(1)
-                selectedCurrentWeight = (parseFloat(selectedCurrentWeight)).toFixed(1)
-                selectedTargetWeight = (parseFloat(selectedTargetWeight)).toFixed(1)
+                selectedHeight = (parseFloat(selectedHeight) * 100).toFixed(0)
+                selectedCurrentWeight = (parseFloat(selectedCurrentWeight)).toFixed(0)
+                selectedTargetWeight = (parseFloat(selectedTargetWeight)).toFixed(0)
 
                 setHeight(selectedHeight) //convert meter to cm
                 setTargetWeight(selectedTargetWeight)
@@ -137,7 +136,7 @@ export default function WeightGoals({ navigation }) {
     };
     return (
         <Screen style={{}}>
-            {!loading ? <BackButton style={{ position: "relative", marginTop: 20 }} /> : null}
+            {!loading ? <BackButton onPress={() => navigation.goBack()} style={{ position: "relative", marginTop: 40, marginStart: 5 }} /> : null}
 
             <View style={{
                 backgroundColor: colors.light,
@@ -285,9 +284,9 @@ export default function WeightGoals({ navigation }) {
                             weeklyWeightGoal: selectedWeightGoal,
                             activityLevel: selectedActivityLevel,
 
-                            height: isImperial ? (parseInt(selectedHeight) * 30.48) : parseInt(selectedHeight),
-                            startingWeight: isImperial ? (parseInt(selectedCurrentWeight) / 2.205) : parseInt(selectedCurrentWeight),
-                            targetWeight: isImperial ? (parseInt(selectedTargetWeight) / 2.205) : parseInt(selectedTargetWeight),
+                            height: isImperial ? parseInt((selectedHeight * 30.48).toFixed(0)) : parseInt(selectedHeight),
+                            startingWeight: isImperial ? parseInt((selectedCurrentWeight / 2.205).toFixed(0)) : parseInt(selectedCurrentWeight),
+                            targetWeight: isImperial ? parseInt((selectedTargetWeight / 2.205).toFixed(0)) : parseInt(selectedTargetWeight),
                         }
                     }).catch((err) => {
                         console.log(JSON.stringify(err, null, 2))

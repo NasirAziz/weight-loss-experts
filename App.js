@@ -3,34 +3,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { TouchableOpacity, Text } from "react-native"
 
-// import ActivityLevel from './screens/ActivityLevel/ActivityLevel';
-// import BMI from './screens/BMI';
-// import BMR from './screens/BMR';
-// import BodyFat from './screens/BodyFat';
-// import Calories from './screens/Calories';
-// import ExercisePlan from './screens/ExercisePlan';
-// import ExerciseVideo from './screens/ExerciseVideo';
-// import GoalWeight from './screens/GoalWeight/GoalWeight';
-// import LoginScreen from './screens/Login/Login';
-// import Results from './screens/Results/Results';
-// import PhoneAuth from './screens/PhoneAuth';
-
-// import SignUpScreen from './screens/Signup/SignUp';
-// import ProfileDetails from './screens/Signup/ProfileDetails';
-// import OnboardingScreen from './screens/Onboarding/OnBoarding';
-// import DietPlan from './screens/DietPlan/DietPlan';
-// import DietPlanInfo from './screens/DietPlan/DietPlanInfo';
-// import HomeScreen from './screens/Home/HomeScreen';
 
 import navigationTheme from './navigationTheme';
-import RecipeHome from './screens/RecipesHome/RecipeHome';
-import RecipeDetails from './screens/RecipeDetails/RecipeDetails';
-import RecipeSearchResult from './screens/RecipeSearchResult/RecipeSearchResult';
-import Profile from './screens/Profile/Profile';
-import EditProfile from './screens/Profile/EditProfile';
-import FoodPreferences from './screens/Profile/FoodPreferences';
-import WeightGoals from './screens/Profile/WeightGoals';
+import HomeStack from './Navigation/HomeStack';
+import ProfileStack from './Navigation/ProfileStack';
+import AuthNavigationStack from './Navigation/AuthNavigationStack';
+import RecipesStack from './Navigation/RecipesStack';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import colors from './config/colors';
 
 
 
@@ -45,50 +28,54 @@ const client = new ApolloClient({
 });
 const Stack = createNativeStackNavigator();
 
-// const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator()
 
-// export function TabNavigator() {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name='Home' component={Home} />
-//       <Tab.Screen name='Profile' component={Profile} />
-//       <Tab.Screen name='MachinesList' component={MachinesList} />
-//     </Tab.Navigator>
-//   )
-// }
+export function TabNavigator() {
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name='HomeStack'
+        options={{
+          tabBarButton: (props) => <TouchableOpacity {...props}>
+            <MaterialCommunityIcons name='home' size={30} color={props.accessibilityState.selected ? colors.primary : colors.medium} />
+            <Text style={{ color: props.accessibilityState.selected ? colors.primary : colors.medium, fontSize: 10 }}>{"Home"}</Text>
+          </TouchableOpacity>,
+          tabBarActiveTintColor: colors.medium
+        }}
+        component={HomeStack} />
+      <Tab.Screen name="RecipesStack" component={RecipesStack}
+        options={{
+          tabBarButton: (props) => <TouchableOpacity {...props}>
+            <MaterialCommunityIcons name='food-turkey' size={30} color={props.accessibilityState.selected ? colors.primary : colors.medium} />
+            <Text style={{ color: props.accessibilityState.selected ? colors.primary : colors.medium, fontSize: 10 }}>{"Recipes"}</Text>
+          </TouchableOpacity>,
+          tabBarActiveTintColor: colors.medium
+        }} />
+      <Tab.Screen name="ProfileStack" component={ProfileStack}
+        options={{
+          tabBarButton: (props) => <TouchableOpacity {...props}>
+            <MaterialCommunityIcons name='account' size={30} color={props.accessibilityState.selected ? colors.primary : colors.medium} />
+            <Text style={{ color: props.accessibilityState.selected ? colors.primary : colors.medium, fontSize: 10 }}>{"Profile"}</Text>
+          </TouchableOpacity>,
+          tabBarActiveTintColor: colors.medium
+        }} />
+    </Tab.Navigator>
+  )
+}
 
 export default function App() {
-
+  const [user, setUser] = React.useState(true)
   return (
     <ApolloProvider client={client}>
       <RootSiblingParent>
         <NavigationContainer theme={navigationTheme}>
-          <Stack.Navigator initialRouteName='Profile' screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="RecipeHome" component={RecipeHome} />
-            <Stack.Screen name="RecipeDetails" component={RecipeDetails} />
-            <Stack.Screen name="RecipeSearchResult" component={RecipeSearchResult} />
-            <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="FoodPreferences" component={FoodPreferences} />
-            <Stack.Screen name="WeightGoals" component={WeightGoals} />
-            {/* <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-          <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
-          <Stack.Screen name="DietPlan" component={DietPlan} />
-          <Stack.Screen name="DietPlanInfo" component={DietPlanInfo} />
-          <Stack.Screen name="Signup" component={SignUpScreen} />
-          
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="PhoneAuth" component={PhoneAuth} />
-          <Stack.Screen name="ExercisePlan" component={ExercisePlan} />
-          <Stack.Screen name="Results" component={Results} />
-          <Stack.Screen name="Activity" component={ActivityLevel} />
-          <Stack.Screen name="BMI" component={BMI} />
-          <Stack.Screen name="ExerciseVideo" component={ExerciseVideo} />
-          <Stack.Screen name="BMR" component={BMR} />
-          <Stack.Screen name="Calories" component={Calories} />
-          <Stack.Screen name="BodyFat" component={BodyFat} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="GoalWeight" component={GoalWeight} /> */}
+          <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false }}>
+            {user ?
+              <Stack.Screen name="HomeTab" component={TabNavigator} />
+              :
+              <Stack.Screen name="AuthNav" component={AuthNavigationStack} />
+            }
+
+
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>

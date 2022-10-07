@@ -26,7 +26,7 @@ function LoginScreen({ navigation }) {
                 <AppText style={styles.title} >Sign in</AppText>
                 <Form
                     initialValues={{ email: "", password: "" }}
-                    onSubmit={(values) => navigation.navigate("HomeScreen")} ////Perform Login auth logic here 
+                    onSubmit={(values) => navigation.navigate("SignUpScreen")} ////Perform Login auth logic here 
                     validationSchema={validationSchema}
                 >
                     <FormField

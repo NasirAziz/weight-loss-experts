@@ -36,7 +36,7 @@ export default function ExercisePlan({ navigation }) {
             <Screen>
                 <View style={{ flex: 1, }}>
 
-                    <BackButton onPress={() => { navigation.pop() }} />
+                    <BackButton onPress={() => { navigation.goBack() }} />
                     <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", marginTop: 10, position: "absolute", top: 280, bottom: 0, left: 0, right: 0, }}>
                         <AppText style={{ fontWeight: "bold" }}>Your Exercise Plan</AppText>
                     </View>

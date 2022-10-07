@@ -24,10 +24,6 @@ export default function HomeScreen({ navigation }) {
                     <HomeHeader name={"Nasir Aziz"} fat={"22%"} intake={997} burned={545} />
                     <View style={styles.container}>
 
-                        <Pressable onPress={() => { }}>
-                            <Drawer />
-                        </Pressable>
-
                         <AppText style={styles.heading}>
                             Your Weekly Diet Plan
                         </AppText>
@@ -67,7 +63,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         // flex: 1,
-        padding: 10,
+        padding: 12,
     },
     buttonRow: {
         flexDirection: 'row',
@@ -75,12 +71,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     heading: {
-        marginTop: 15,
+        marginTop: 25,
         marginLeft: 10,
     }, line: {
         borderBottomColor: colors.dark,
-        borderBottomWidth: 2,
-        marginVertical: 15,
+        borderBottomWidth: 1.5,
+        marginVertical: 25,
         marginHorizontal: 30,
         opacity: 0.2,
 

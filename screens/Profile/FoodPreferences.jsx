@@ -12,6 +12,7 @@ import GET_USER_RESTRICTIONS from '../../Backend/Suggestic/Queries/getUserRestri
 import UPDATE_USER_RESTRICTIONS from "../../Backend/Suggestic/Mutaions/updateUserRestrictions"
 import colors from '../../config/colors';
 import AppLoading from '../AppLoading';
+import BackButton from '../../components/BackButton'
 
 
 let ListOfRestrictionsToSend = []
@@ -72,7 +73,8 @@ export default function FoodPreferences({ navigation }) {
 
     return (
         <Screen>
-            {/* <TouchableHighlight onPress={() => setIs(!isCollapsed)}> */}
+            <BackButton onPress={() => navigation.goBack()} style={{ top: 30, left: 20 }} />
+
             <ScrollView style={styles.mainView}>
 
                 <Accordion
@@ -141,13 +143,14 @@ const styles = StyleSheet.create({
     header: {
         padding: 14,
         backgroundColor: "#fff",
-        marginBottom: 2
+        marginTop: 5
     },
     headerText: {
         fontSize: 16,
         fontWeight: "bold"
     },
     mainView: {
-        backgroundColor: colors.light
+        backgroundColor: colors.light,
+        marginTop: 80
     }
 })

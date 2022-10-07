@@ -13,6 +13,7 @@ import FAVORITE_RECIPES from '../../Backend/Suggestic/Queries/favoriteRecipes';
 import ADD_TO_USER_FAVORITE from '../../Backend/Suggestic/Mutaions/addTouserFavorite';
 import RECIPE_SEARCH from '../../Backend/Suggestic/Queries/recipeSearch';
 import Toast from 'react-native-root-toast';
+import AppLoading from '../AppLoading';
 
 const client2 = new ApolloClient({
     uri: 'https://production.suggestic.com/graphql',
@@ -26,6 +27,7 @@ const client2 = new ApolloClient({
 const MyComponent = ({ navigation }) => {
     const [searchQuery, setSearchQuery] = React.useState('');
 
+
     const onChangeSearch = query => setSearchQuery(query);
 
     return (
@@ -35,17 +37,20 @@ const MyComponent = ({ navigation }) => {
             value={searchQuery}
             icon={"magnify"}
             onIconPress={() => {
+
                 client2.query({ query: RECIPE_SEARCH, variables: { query: searchQuery } })
                     .then((data) => {
                         navigation.navigate("RecipeSearchResult", { data })
-                    })
+                    }).catch(() => null)
+                return <AppLoading />
             }}
             showSoftInputOnFocus={true}
             onEndEditing={() => {
                 client2.query({ query: RECIPE_SEARCH, variables: { query: searchQuery } })
                     .then((data) => {
                         navigation.navigate("RecipeSearchResult", { data })
-                    })
+                    }).catch(() => null)
+                return <AppLoading />
             }}
 
         />
@@ -55,7 +60,7 @@ const MyComponent = ({ navigation }) => {
 function PopularRecipes({ navigation }) {
 
     const { loading, error, data } = useQuery(POPULAR_RECIPES, { client: client2, })
-    if (loading) return <AppText>'Loading...'</AppText>;
+    if (loading) return <AppLoading />;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
 
     return (
@@ -75,7 +80,7 @@ function PopularRecipes({ navigation }) {
                             })
                                 .then((data) => {
                                     client2.resetStore()
-                                    let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                    Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
                                         duration: Toast.durations.SHORT,
                                         position: Toast.positions.BOTTOM,
                                         shadow: true,
@@ -122,7 +127,7 @@ function PopularRecipes({ navigation }) {
 
 function FavoriteRecipes({ navigation }) {
     const { loading, error, data } = useQuery(FAVORITE_RECIPES, { client: client2 },)
-    if (loading) return <AppText>'Loading...'</AppText>;
+    if (loading) return <></>;
     if (error) console.log(JSON.stringify(error));
     return (
 
@@ -139,7 +144,7 @@ function FavoriteRecipes({ navigation }) {
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
 
-                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
                                     duration: Toast.durations.SHORT,
                                     position: Toast.positions.BOTTOM,
                                     shadow: true,
@@ -186,7 +191,7 @@ function FavoriteRecipes({ navigation }) {
 
 function BreakfastRecipes({ navigation }) {
     const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "BREAKFAST" }, client: client2 },)
-    if (loading) return <AppText>'Loading...'</AppText>;
+    if (loading) return <AppLoading />;
     if (error) console.log(JSON.stringify(error));
     return (
 
@@ -203,7 +208,7 @@ function BreakfastRecipes({ navigation }) {
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
 
-                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
                                     duration: Toast.durations.SHORT,
                                     position: Toast.positions.BOTTOM,
                                     shadow: true,
@@ -249,7 +254,7 @@ function BreakfastRecipes({ navigation }) {
 
 function LunchRecipes({ navigation }) {
     const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "LUNCH" }, client: client2 })
-    if (loading) return <AppText>'Loading...'</AppText>;
+    if (loading) return <AppLoading />;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
     return (
         <View style={{ paddingHorizontal: 10 }}>
@@ -265,7 +270,7 @@ function LunchRecipes({ navigation }) {
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
 
-                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
                                     duration: Toast.durations.SHORT,
                                     position: Toast.positions.BOTTOM,
                                     shadow: true,
@@ -311,7 +316,7 @@ function LunchRecipes({ navigation }) {
 
 function DinnerRecipes({ navigation }) {
     const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "DINNER" }, client: client2 })
-    if (loading) return <AppText>'Loading...'</AppText>;
+    if (loading) return <></>;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
     return (
         <View style={{ paddingHorizontal: 10 }}>
@@ -327,7 +332,7 @@ function DinnerRecipes({ navigation }) {
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
 
-                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
                                     duration: Toast.durations.SHORT,
                                     position: Toast.positions.BOTTOM,
                                     shadow: true,
@@ -374,7 +379,7 @@ function DinnerRecipes({ navigation }) {
 
 function SnackRecipes({ navigation }) {
     const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "SNACK" }, client: client2 })
-    if (loading) return <AppText>'Loading...'</AppText>;
+    if (loading) return <AppLoading />;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
 
     return (
@@ -391,7 +396,7 @@ function SnackRecipes({ navigation }) {
                             client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
                                 client2.resetStore()
 
-                                let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
                                     duration: Toast.durations.SHORT,
                                     position: Toast.positions.BOTTOM,
                                     shadow: true,

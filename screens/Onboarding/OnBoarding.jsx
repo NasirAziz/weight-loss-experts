@@ -12,6 +12,9 @@ import {
 import Svg, { Path } from 'react-native-svg';
 const { width, height } = Dimensions.get('window');
 import Button from '../../components/Button';
+import Screen from '../../components/Screen';
+import AppText from '../../components/Text';
+import TopWave1 from '../../components/TopWave1';
 const COLORS = { primary: '#282534', white: '#fff' };
 
 const slides = [
@@ -52,37 +55,7 @@ const Slide = ({ item }) => {
 };
 
 
-import { ApolloClient, ApolloError, InMemoryCache } from '@apollo/client';
-import GENERATE_MEAL_PLAN from '../../Backend/Suggestic/Mutaions/generateMealPlan';
-import CREATE_PROFILE_CUSTOM_ATTRIBUTES from '../../Backend/Suggestic/Mutaions/createProfileCustomAttributes';
 const OnboardingScreen = ({ navigation }) => {
-
-  const client = new ApolloClient({
-    uri: 'https://production.suggestic.com/graphql',
-    cache: new InMemoryCache(),
-    headers: {
-      "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
-      "sg-user": "25180fc9-0544-477a-9574-33f1674156f2"
-    },
-  });
-
-  client.mutate({
-    variables:
-    {
-      varr: [
-        {
-          name: "BMR",
-          value: 20.0,
-          dataType: "FLOAT",
-          category: "Genetics",
-          timestamp: 507482179.234
-        }
-      ]
-    },
-    mutation: CREATE_PROFILE_CUSTOM_ATTRIBUTES,
-  })
-    .then(result => { console.log(result) })
-    .catch(error => { console.log(JSON.stringify(error, null, 2)) });
 
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const ref = React.useRef();
@@ -141,22 +114,23 @@ const OnboardingScreen = ({ navigation }) => {
         {/* Render buttons */}
         <View style={{ marginBottom: 20 }}>
           {currentSlideIndex == slides.length - 1 ? (
-            <View>
-              <Button title={"Get Started"} onPress={() => navigation.replace('ProfileDetails')} />
+            <View >
+              <Button title={"Get Started"} onPress={() => navigation.replace('LoginScreen')} />
             </View>
           ) : (
             <View style={{ flexDirection: 'row' }}>
 
-              <View style={{ width: 15 }} />
+              {/* <View style={{ width: 15 }} /> */}
 
               <View style={[styles.container, {
                 flexDirection: "row",
                 justifyContent: "space-between",
               }]}>
-                <View >
+                <View style={{ flex: 1, marginHorizontal: 5 }} >
                   <Button title={"Skip"} onPress={skip} />
                 </View>
-                <View  >
+
+                <View style={{ flex: 1, marginHorizontal: 5 }} >
                   <Button title={"Next"} onPress={goToNextSlide} />
                 </View>
 
@@ -173,54 +147,40 @@ const OnboardingScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <Svg
-        height={200}
-        width={Dimensions.get('screen').width}
-        viewBox="0 0 1440 320"
-        style={styles.topWavy}
-      >
-        <Path
-          fill="green"
-          d='M0,192L60,170.7C120,149,240,107,360,112C480,117,600,171,720,197.3C840,224,960,224,1080,208C1200,192,1320,160,1380,144L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z'
+    <>
+      <TopWave1 />
+      <Screen style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={{ alignItems: "center", }}>
+          <AppText style={{ fontSize: 25, fontWeight: 'bold' }}>Weight Loss Experts</AppText>
+
+        </View>
+        {/* <StatusBar /> */}
+        <FlatList
+          ref={ref}
+          onMomentumScrollEnd={updateCurrentSlideIndex}
+          contentContainerStyle={{ height: height * 0.75 }}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          data={slides}
+          pagingEnabled
+          renderItem={({ item }) => <Slide item={item} />}
         />
-      </Svg>
-      <View style={{ alignItems: "center", marginTop: "30%" }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Weight Experts</Text>
 
+        <Footer />
+      </Screen>
+    </>
 
-      </View>
-      <StatusBar />
-      <FlatList
-        ref={ref}
-        onMomentumScrollEnd={updateCurrentSlideIndex}
-        contentContainerStyle={{ height: height * 0.75 }}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        data={slides}
-        pagingEnabled
-        renderItem={({ item }) => <Slide item={item} />}
-      />
-
-      <Footer />
-    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  topWavy: {
-    position: "absolute",
-    marginTop: "-17%",
-
-
-  },
   subtitle: {
     color: "black",
-    fontSize: 13,
+    fontSize: 15,
     marginTop: 10,
     maxWidth: '70%',
     textAlign: 'center',
-    lineHeight: 23,
+    lineHeight: 20,
   },
   title: {
     color: "black",
@@ -235,19 +195,11 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   indicator: {
-    height: 2.5,
+    height: 5,
     width: 10,
     backgroundColor: 'grey',
     marginHorizontal: 3,
     borderRadius: 2,
-  },
-  btn: {
-    flex: 1,
-    height: 50,
-    borderRadius: 5,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   container: {
     flex: 1,

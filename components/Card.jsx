@@ -33,8 +33,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginBottom: 20,
     overflow: "hidden",
-    height: 200,
-    width: 300
+    height: 210,
+    width: 300,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 5,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 4,
   },
   detailsContainer: {
     padding: 20,
