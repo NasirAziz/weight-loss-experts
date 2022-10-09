@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Image, TouchableOpacity, View, Text } from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, Image, TouchableOpacity, View, Text, Pressable } from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../../components/Screen";
@@ -11,6 +11,8 @@ import Facebook from "../../assets/facebook.svg"
 import Goolge from "../../assets/google.svg"
 import Logo from "../../assets/logo2.svg"
 import TopWave1 from "../../components/TopWave1";
+import AuthContext from "../../authentication/context";
+import Toast from "react-native-root-toast";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().required().email().label("Email"),
@@ -18,6 +20,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
+    const authContext = useContext(AuthContext)
     return (
         <>
             <TopWave1 />
@@ -26,7 +29,29 @@ function LoginScreen({ navigation }) {
                 <AppText style={styles.title} >Sign in</AppText>
                 <Form
                     initialValues={{ email: "", password: "" }}
-                    onSubmit={(values) => navigation.navigate("SignUpScreen")} ////Perform Login auth logic here 
+                    onSubmit={async (values) => {
+                        // console.log(values)
+                        let formData = new FormData()
+                        formData.append("email", values.email)
+                        formData.append("password", values.password)
+
+                        let response = await fetch("https://production.suggestic.com/api/v1/login", {
+                            method: "POST",
+                            body: formData,
+                        })
+
+                        if (response.ok) {
+                            let json = await response.json();
+                            console.log(json)
+                            authContext.setUser(json)
+                        } else {
+                            let json = await response.json();
+                            console.log(json.detail)
+                            Toast.show(json)
+                        }
+                        // navigation.navigate("SignUpScreen")
+                    }
+                    } ////Perform Login auth logic here 
                     validationSchema={validationSchema}
                 >
                     <FormField
@@ -59,7 +84,13 @@ function LoginScreen({ navigation }) {
                     // } 
                     />
                 </Form>
-                <AppText style={styles.signup} >Don't have an account? <AppText style={styles.link} >Sign up</AppText></AppText>
+
+                <AppText style={styles.signup} >Don't have an account?
+                    <Pressable onPress={() => navigation.navigate("SignUpScreen")}>
+                        <AppText style={styles.link} >Sign up</AppText>
+                    </Pressable>
+                </AppText>
+
                 <View style={styles.iconsContainer}>
 
                     <TouchableOpacity style={styles.icon}>

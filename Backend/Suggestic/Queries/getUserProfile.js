@@ -5,51 +5,69 @@ const GET_USER_PROFILE = gql`
         myProfile {
             id
             age
-            birthdate
-            biologicalSex
-            activityLevel
-            startingWeight
-            customAttributes
-            targetWeight
+            email
             height
-            weeklyWeightGoal
+            userId
             goalsOn
+            language
             isImperial
             programName
-            language
-            restrictions {
-                id
-                name
-                isOnProgram
-                subcategory
-                slugname 
-            }
-            dailyCaloricIntakeGoal
+            biologicalSex
+            customAttributes
             caloricDifference
-            totalDailyEnergyExpenditure
             basalMetabolicRate
-            program {
-                databaseId
-                name
-                author
-            }
-            mealPlan {
-                id
-                day
-                date
-            meals {
-                recipe {
-                    id
-                    name
-                }
-                meal
-                calories
-            }
+            dailyCaloricIntakeGoal
+            totalDailyEnergyExpenditure
         }
     }
-}
 
 `;
+
+
+// {
+//   myProfile {
+//         id
+//         age
+//         birthdate
+//         biologicalSex
+//         activityLevel
+//         startingWeight
+//         customAttributes
+//         targetWeight
+//         height
+//         weeklyWeightGoal
+//         goalsOn
+//         isImperial
+//         programName
+//         language
+//     restrictions {
+//             name
+//         }
+//         dailyCaloricIntakeGoal
+//         caloricDifference
+//         totalDailyEnergyExpenditure
+//         basalMetabolicRate
+//     program {
+//             databaseId
+//             name
+//             author
+//         }
+//     mealPlan {
+//             id
+//             day
+//             date
+//       meals {
+//         recipe {
+//                     id
+//                     name
+//                 }
+//                 meal
+//                 calories
+//             }
+//         }
+//     }
+// }
+
 
 
 export default GET_USER_PROFILE;

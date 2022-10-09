@@ -23,7 +23,7 @@ export default function EditProfile({ navigation, route }) {
                 }
             }
             `, {
-        onCompleted: (data) => data.updateProfile.success ? navigation.goBack() : console.log(data.updateProfile.errors)
+        onCompleted: (data) => data.updateProfile.success ? navigation.goBack() : console.log(data.updateProfile.errors)//TODO also update userContext
     }
     );
     return (

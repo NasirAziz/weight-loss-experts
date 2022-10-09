@@ -18,7 +18,7 @@ function Card({ title, subTitle, image, onPress, isUserFav = false }) {
         <AppText style={styles.subTitle} numberOfLines={2}>
           {subTitle}
         </AppText>
-        <Pressable onPress={onPress}//() => { setIsFav(isFav ? false : true) }
+        <Pressable onPress={onPress}
           style={{ position: "absolute", right: 20, bottom: 20 }}>
           <MaterialCommunityIcons name="heart" size={24} color={isUserFav ? "red" : "grey"} />
         </Pressable>
@@ -31,18 +31,13 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 15,
     backgroundColor: colors.white,
+    marginHorizontal: 10,
+    marginTop: 5,
     marginBottom: 20,
     overflow: "hidden",
     height: 210,
     width: 300,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 5,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 4,
+    elevation: 10,
   },
   detailsContainer: {
     padding: 20,

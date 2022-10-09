@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Image, ScrollView, Pressable } from 'react-native'
+import { StyleSheet, View, Image, ScrollView, Pressable, BackHandler } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMutation, ApolloClient, InMemoryCache, } from '@apollo/client';
 import Toast from 'react-native-root-toast';
@@ -11,6 +11,7 @@ import Screen from '../../components/Screen';
 import colors from '../../config/colors';
 import ADD_TO_SHOPPING_LIST from '../../Backend/Suggestic/Mutaions/addToShoppingList';
 import ADD_TO_USER_FAVORITE from '../../Backend/Suggestic/Mutaions/addTouserFavorite';
+import BackButton from '../../components/BackButton';
 
 
 const client2 = new ApolloClient({
@@ -21,7 +22,8 @@ const client2 = new ApolloClient({
         "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
     },
 });
-
+let shouldRefetch = false;
+let wasFavorite = false;
 
 function FavIcon({ isFav, id }) {
     const [isUserFav, setIsUSerFav] = useState(isFav)
@@ -30,9 +32,10 @@ function FavIcon({ isFav, id }) {
             <Pressable onPress={() => {
                 client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: id } })
                     .then((data) => {
-                        client2.resetStore()
+                        shouldRefetch = data.data.userFavoriteRecipe.isUserFavorite === wasFavorite;
+                        // client2.resetStore()
                         setIsUSerFav(data.data.userFavoriteRecipe.isUserFavorite)
-                        let toast = Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                        Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
                             duration: Toast.durations.SHORT,
                             position: Toast.positions.BOTTOM,
                             shadow: true,
@@ -60,14 +63,24 @@ function FavIcon({ isFav, id }) {
     )
 }
 
-export default function RecipeDetails({ route }) {
-    const { item } = route.params;
+export default function RecipeDetails({ route, navigation }) {
+    React.useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
+        return () =>
+            BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, []);
+
+    const onBackPress = () => {
+        navigation.navigate({ name: "RecipeHome", params: { refetch: shouldRefetch }, merge: true })
+        return true
+    }
+    const { item } = route.params;
     const [addToSoppingListM] = useMutation(ADD_TO_SHOPPING_LIST, {
         variables: { recipeId: item.databaseId },
         onCompleted: data => {
             console.log(data);
-            let toast = Toast.show(data.addToShoppingList.message, {
+            Toast.show(data.addToShoppingList.message, {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.BOTTOM,
                 shadow: true,
@@ -89,10 +102,10 @@ export default function RecipeDetails({ route }) {
             });
         }
     })
-
+    wasFavorite = item.isUserFavorite
     return (
         <Screen>
-
+            <BackButton onPress={onBackPress} style={{ marginTop: 40, marginStart: 5 }} />
             <ScrollView>
 
                 {/*  */}

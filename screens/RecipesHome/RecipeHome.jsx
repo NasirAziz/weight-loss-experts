@@ -64,7 +64,7 @@ function PopularRecipes({ navigation }) {
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
 
     return (
-        <View style={{ paddingHorizontal: 10 }}>
+        <View style={{}}>
             <AppText style={{ marginHorizontal: 20, marginVertical: 8, fontWeight: "bold" }}>
                 Popular
             </AppText>
@@ -131,7 +131,7 @@ function FavoriteRecipes({ navigation }) {
     if (error) console.log(JSON.stringify(error));
     return (
 
-        <View style={{ paddingHorizontal: 10 }}>
+        <View style={{}}>
             <AppText style={{ marginHorizontal: 20, marginVertical: 8, fontWeight: "bold" }}>
                 Favorites
             </AppText>
@@ -195,7 +195,7 @@ function BreakfastRecipes({ navigation }) {
     if (error) console.log(JSON.stringify(error));
     return (
 
-        <View style={{ paddingHorizontal: 10 }}>
+        <View style={{}}>
             <AppText style={{ marginHorizontal: 20, marginVertical: 8, fontWeight: "bold" }}>
                 Breakfast
             </AppText>
@@ -257,7 +257,7 @@ function LunchRecipes({ navigation }) {
     if (loading) return <AppLoading />;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
     return (
-        <View style={{ paddingHorizontal: 10 }}>
+        <View style={{}}>
             <AppText style={{ marginHorizontal: 20, marginVertical: 8, fontWeight: "bold" }}>
                 Lunch
             </AppText>
@@ -319,7 +319,7 @@ function DinnerRecipes({ navigation }) {
     if (loading) return <></>;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
     return (
-        <View style={{ paddingHorizontal: 10 }}>
+        <View style={{}}>
             <AppText style={{ marginHorizontal: 20, marginVertical: 8, fontWeight: "bold" }}>
                 Dinner
             </AppText>
@@ -383,7 +383,7 @@ function SnackRecipes({ navigation }) {
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
 
     return (
-        <View style={{ paddingHorizontal: 10 }}>
+        <View style={{}}>
             <AppText style={{ marginHorizontal: 20, marginVertical: 8, fontWeight: "bold" }}>
                 Snack
             </AppText>
@@ -441,12 +441,13 @@ function SnackRecipes({ navigation }) {
 }
 
 
-export default function RecipeHome({ navigation }) {
+export default function RecipeHome({ navigation, route }) {
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // The screen is focused
             // Call any action
-            client2.resetStore()
+            console.log(route.params)
+            client2.reFetchObservableQueries()
         });
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -459,6 +460,7 @@ export default function RecipeHome({ navigation }) {
                 <View style={{ padding: 20 }}>
                     <MyComponent navigation={navigation} />
                 </View>
+
                 <ScrollView>
 
                     <FavoriteRecipes navigation={navigation} />

@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image, Pressable, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import { gql, useMutation } from '@apollo/client';
@@ -7,8 +7,11 @@ import Toast from 'react-native-root-toast';
 
 import Screen from '../../components/Screen'
 import AppText from '../../components/Text'
+import AuthContext from '../../authentication/context';
 
 export default function Profile({ navigation, route }) {
+    const userContext = useContext(AuthContext)
+
     const [image, setImage] = React.useState(null);
     const [update] = useMutation(gql`
             mutation createProfileCustomAttributes($varr:[ProfileCustomAttribute!]!){
@@ -61,13 +64,13 @@ export default function Profile({ navigation, route }) {
             <ScrollView style={{ backgroundColor: "#f1f1f1", flex: 1 }}>
                 <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: "#fff", paddingVertical: 30 }}>
                     <TouchableOpacity onPress={handleImageChange}>
-                        <Image style={{ width: 180, height: 180, borderRadius: 500 }} source={image !== null ? { uri: image } : require("../../assets/blank-profile-picture-640.png")} />
+                        <Image style={{ width: 150, height: 150, borderRadius: 500 }} source={image !== null ? { uri: image } : require("../../assets/blank-profile-picture-640.png")} />
                     </TouchableOpacity>
-                    <AppText style={{ fontSize: 22, fontWeight: "bold", marginTop: 8 }}>Abdul Haseeb</AppText>
+                    <AppText style={{ fontSize: 22, fontWeight: "bold", marginTop: 8 }}>{userContext.user.name}</AppText>
                 </View>
                 <View style={{ width: "100%", backgroundColor: "#f1f1f1", height: 25 }} />
 
-                <ProfileOptionsItem icon={"account"} text={"Edit Profile"} onPress={() => { navigation.navigate("EditProfile", { name: "Nasir", email: "nasiraziz08@gmail.com" }) }} />
+                <ProfileOptionsItem icon={"account"} text={"Edit Profile"} onPress={() => { navigation.navigate("EditProfile", { name: userContext.user.name, email: userContext.user.email }) }} />
                 <View style={{ alignSelf: "center", width: "90%", backgroundColor: "#D3D3D3", height: 1 }} />
 
                 <ProfileOptionsItem icon={"star"} text={"Plans"} onPress={() => { }} />
@@ -89,6 +92,9 @@ export default function Profile({ navigation, route }) {
 
                 <ProfileOptionsItem icon={"crosshairs-gps"} text={"Location"} onPress={() => { }} />
                 {/* <View style={{ alignSelf: "center", width: "90%", backgroundColor: "#D3D3D3", height: 1 }} /> */}
+                <View style={{ width: "100%", backgroundColor: "#f1f1f1", height: 25 }} />
+
+                <ProfileOptionsItem icon={"bell-badge"} text={"Logout"} onPress={() => { userContext.setUser(undefined) }} />
                 <View style={{ width: "100%", backgroundColor: "#f1f1f1", height: 25 }} />
 
 

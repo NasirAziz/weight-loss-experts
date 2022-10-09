@@ -5,20 +5,20 @@ const SHOPPING_LIST = gql`
     shoppingList {
       edges {
         node {
-          ingredient
-          quantity
           unit
-          isDone
-          ingredientLine
-          recipeName
-          aisleName
-          databaseId
-          recipeId
-          numberOfServings
-          comment
-          recipeServings
-          floatQuantity
           errors
+          isDone
+          comment
+          quantity
+          recipeId
+          aisleName
+          ingredient
+          recipeName
+          databaseId
+          floatQuantity
+          recipeServings
+          ingredientLine
+          numberOfServings
         }
       }
     }
