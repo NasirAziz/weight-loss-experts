@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Switch, ScrollView, ActivityIndicator } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useQuery, useMutation } from '@apollo/client';
 import Accordion from 'react-native-collapsible/Accordion';
 
@@ -13,14 +13,16 @@ import UPDATE_USER_RESTRICTIONS from "../../Backend/Suggestic/Mutaions/updateUse
 import colors from '../../config/colors';
 import AppLoading from '../AppLoading';
 import BackButton from '../../components/BackButton'
+import AuthContext from '../../authentication/context';
 
 
 let ListOfRestrictionsToSend = []
 let ListLength = -1
 
 export default function FoodPreferences({ navigation }) {
+    const { user } = useContext(AuthContext)
 
-    const userRest = useQuery(GET_USER_RESTRICTIONS).data
+    const userRest = useQuery(GET_USER_RESTRICTIONS, { context: { headers: { "sg-user": user.user_id } } }).data
     const [activeSections, setActiveSections] = useState([])
     const [changedSettings, setChangedSettings] = useState(false)
     const [update] = useMutation(UPDATE_USER_RESTRICTIONS, {
@@ -28,9 +30,9 @@ export default function FoodPreferences({ navigation }) {
         onCompleted: (data) => {
             if (data.profileRestrictionsUpdate.success)
                 navigation.goBack()
-        }
+        }, context: { headers: { "sg-user": user.user_id } }
     })
-    const { loading, error, data } = useQuery(GET_ALL_RESTRICTIONS)
+    const { loading, error, data } = useQuery(GET_ALL_RESTRICTIONS, { context: { headers: { "sg-user": user.user_id } } })
 
     useEffect(() => {
         if (userRest !== undefined) {

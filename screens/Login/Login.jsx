@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { StyleSheet, Image, TouchableOpacity, View, Text, Pressable } from "react-native";
+import React from "react";
+import { StyleSheet, TouchableOpacity, View, Pressable } from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../../components/Screen";
@@ -11,8 +11,8 @@ import Facebook from "../../assets/facebook.svg"
 import Goolge from "../../assets/google.svg"
 import Logo from "../../assets/logo2.svg"
 import TopWave1 from "../../components/TopWave1";
-import AuthContext from "../../authentication/context";
 import Toast from "react-native-root-toast";
+import useAuth from "../../authentication/useAuth";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().required().email().label("Email"),
@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
-    const authContext = useContext(AuthContext)
+    const { logIn } = useAuth()
     return (
         <>
             <TopWave1 />
@@ -41,17 +41,15 @@ function LoginScreen({ navigation }) {
                         })
 
                         if (response.ok) {
-                            let json = await response.json();
-                            console.log(json)
-                            authContext.setUser(json)
+                            let user = await response.json();
+                            logIn(user)
                         } else {
                             let json = await response.json();
-                            console.log(json.detail)
-                            Toast.show(json)
+                            Toast.show(json.detail)
                         }
-                        // navigation.navigate("SignUpScreen")
+
                     }
-                    } ////Perform Login auth logic here 
+                    }
                     validationSchema={validationSchema}
                 >
                     <FormField

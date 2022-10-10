@@ -29,13 +29,14 @@ const client = new ApolloClient({
 
 export default function HomeScreen({ navigation }) {
 
-    const userContext = useContext(AuthContext)
+    const { user, setuser } = useContext(AuthContext)
+    console.log(user)
     return (
         <View>
             <ScrollView style={styles.container2}>
                 <StatusBar barStyle="dark-content" backgroundColor="#38CF8C" translucent={true} />
                 <Screen>
-                    <HomeHeader name={userContext.user.name} fat={"22%"} intake={997} burned={545} />
+                    <HomeHeader name={user.name} fat={"22%"} intake={997} burned={545} />
                     <View style={styles.container}>
 
                         <AppText style={styles.heading}>

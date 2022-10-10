@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FlatList, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { Searchbar } from 'react-native-paper';
 import { useQuery, ApolloClient, InMemoryCache, } from '@apollo/client';
@@ -14,17 +14,17 @@ import ADD_TO_USER_FAVORITE from '../../Backend/Suggestic/Mutaions/addTouserFavo
 import RECIPE_SEARCH from '../../Backend/Suggestic/Queries/recipeSearch';
 import Toast from 'react-native-root-toast';
 import AppLoading from '../AppLoading';
+import AuthContext from '../../authentication/context';
 
 const client2 = new ApolloClient({
     uri: 'https://production.suggestic.com/graphql',
     cache: new InMemoryCache(),
     headers: {
         "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
-        "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
     },
 });
 
-const MyComponent = ({ navigation }) => {
+const MyComponent = ({ navigation, user }) => {
     const [searchQuery, setSearchQuery] = React.useState('');
 
 
@@ -38,7 +38,7 @@ const MyComponent = ({ navigation }) => {
             icon={"magnify"}
             onIconPress={() => {
 
-                client2.query({ query: RECIPE_SEARCH, variables: { query: searchQuery } })
+                client2.query({ query: RECIPE_SEARCH, variables: { query: searchQuery }, context: { headers: { "sg-user": user.user_id } } })
                     .then((data) => {
                         navigation.navigate("RecipeSearchResult", { data })
                     }).catch(() => null)
@@ -46,7 +46,7 @@ const MyComponent = ({ navigation }) => {
             }}
             showSoftInputOnFocus={true}
             onEndEditing={() => {
-                client2.query({ query: RECIPE_SEARCH, variables: { query: searchQuery } })
+                client2.query({ query: RECIPE_SEARCH, variables: { query: searchQuery }, context: { headers: { "sg-user": user.user_id } } })
                     .then((data) => {
                         navigation.navigate("RecipeSearchResult", { data })
                     }).catch(() => null)
@@ -57,9 +57,10 @@ const MyComponent = ({ navigation }) => {
     );
 };
 
-function PopularRecipes({ navigation }) {
+function PopularRecipes({ navigation, user }) {
 
-    const { loading, error, data } = useQuery(POPULAR_RECIPES, { client: client2, })
+
+    const { loading, error, data } = useQuery(POPULAR_RECIPES, { client: client2, context: { headers: { "sg-user": user.user_id } } })
     if (loading) return <AppLoading />;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
 
@@ -76,31 +77,31 @@ function PopularRecipes({ navigation }) {
 
                             client2.mutate({
                                 mutation: ADD_TO_USER_FAVORITE,
-                                variables: { recipeId: item.node.databaseId }
-                            })
-                                .then((data) => {
-                                    client2.resetStore()
-                                    Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
-                                        duration: Toast.durations.SHORT,
-                                        position: Toast.positions.BOTTOM,
-                                        shadow: true,
-                                        animation: true,
-                                        hideOnPress: true,
-                                        delay: 0,
-                                        onShow: () => {
-                                            // calls on toast\`s appear animation start
-                                        },
-                                        onShown: () => {
-                                            // calls on toast\`s appear animation end.
-                                        },
-                                        onHide: () => {
-                                            // calls on toast\`s hide animation start.
-                                        },
-                                        onHidden: () => {
-                                            // calls on toast\`s hide animation end.
-                                        }
-                                    });
-                                }).catch((err) => console.log(JSON.stringify(err, null, 2)))
+                                variables: { recipeId: item.node.databaseId },
+                                context: { headers: { "sg-user": user.user_id } }
+                            }).then((data) => {
+                                client2.resetStore()
+                                Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                    delay: 0,
+                                    onShow: () => {
+                                        // calls on toast\`s appear animation start
+                                    },
+                                    onShown: () => {
+                                        // calls on toast\`s appear animation end.
+                                    },
+                                    onHide: () => {
+                                        // calls on toast\`s hide animation start.
+                                    },
+                                    onHidden: () => {
+                                        // calls on toast\`s hide animation end.
+                                    }
+                                });
+                            }).catch((err) => console.log(JSON.stringify(err, null, 2)))
 
                         }} isUserFav={item.node.isUserFavorite} title={item.node.name} image={item.node.mainImage} subTitle={item.node.author} />
                     </Pressable>
@@ -125,9 +126,10 @@ function PopularRecipes({ navigation }) {
 }
 
 
-function FavoriteRecipes({ navigation }) {
-    const { loading, error, data } = useQuery(FAVORITE_RECIPES, { client: client2 },)
+function FavoriteRecipes({ navigation, user }) {
+    const { loading, error, data } = useQuery(FAVORITE_RECIPES, { client: client2, context: { headers: { "sg-user": user.user_id } } },)
     if (loading) return <></>;
+    if (data.myFavoriteRecipes.edges.length <= 0) return <></>
     if (error) console.log(JSON.stringify(error));
     return (
 
@@ -141,7 +143,11 @@ function FavoriteRecipes({ navigation }) {
                     <Pressable onPress={() => navigation.navigate("RecipeDetails", { item: item.node })}>
                         <Card onPress={() => {
 
-                            client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
+                            client2.mutate({
+                                mutation: ADD_TO_USER_FAVORITE,
+                                variables: { recipeId: item.node.databaseId },
+                                context: { headers: { "sg-user": user.user_id } }
+                            }).then((data) => {
                                 client2.resetStore()
 
                                 Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
@@ -189,8 +195,8 @@ function FavoriteRecipes({ navigation }) {
 }
 
 
-function BreakfastRecipes({ navigation }) {
-    const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "BREAKFAST" }, client: client2 },)
+function BreakfastRecipes({ navigation, user }) {
+    const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "BREAKFAST" }, client: client2, context: { headers: { "sg-user": user.user_id } } },)
     if (loading) return <AppLoading />;
     if (error) console.log(JSON.stringify(error));
     return (
@@ -205,7 +211,11 @@ function BreakfastRecipes({ navigation }) {
                     <Pressable onPress={() => navigation.navigate("RecipeDetails", { item: item.node })}>
                         <Card onPress={() => {
 
-                            client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
+                            client2.mutate({
+                                mutation: ADD_TO_USER_FAVORITE,
+                                variables: { recipeId: item.node.databaseId },
+                                context: { headers: { "sg-user": user.user_id } }
+                            }).then((data) => {
                                 client2.resetStore()
 
                                 Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
@@ -252,8 +262,8 @@ function BreakfastRecipes({ navigation }) {
     )
 }
 
-function LunchRecipes({ navigation }) {
-    const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "LUNCH" }, client: client2 })
+function LunchRecipes({ navigation, user }) {
+    const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "LUNCH" }, client: client2, context: { headers: { "sg-user": user.user_id } } })
     if (loading) return <AppLoading />;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
     return (
@@ -267,7 +277,11 @@ function LunchRecipes({ navigation }) {
                     <Pressable onPress={() => navigation.navigate("RecipeDetails", { item: item.node })}>
                         <Card onPress={() => {
 
-                            client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
+                            client2.mutate({
+                                mutation: ADD_TO_USER_FAVORITE,
+                                variables: { recipeId: item.node.databaseId },
+                                context: { headers: { "sg-user": user.user_id } }
+                            }).then((data) => {
                                 client2.resetStore()
 
                                 Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
@@ -314,8 +328,8 @@ function LunchRecipes({ navigation }) {
     )
 }
 
-function DinnerRecipes({ navigation }) {
-    const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "DINNER" }, client: client2 })
+function DinnerRecipes({ navigation, user }) {
+    const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "DINNER" }, client: client2, context: { headers: { "sg-user": user.user_id } } })
     if (loading) return <></>;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
     return (
@@ -329,7 +343,11 @@ function DinnerRecipes({ navigation }) {
                     <Pressable onPress={() => navigation.navigate("RecipeDetails", { item: item.node })}>
                         <Card onPress={() => {
 
-                            client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
+                            client2.mutate({
+                                mutation: ADD_TO_USER_FAVORITE,
+                                variables: { recipeId: item.node.databaseId },
+                                context: { headers: { "sg-user": user.user_id } }
+                            }).then((data) => {
                                 client2.resetStore()
 
                                 Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
@@ -377,8 +395,12 @@ function DinnerRecipes({ navigation }) {
     )
 }
 
-function SnackRecipes({ navigation }) {
-    const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, { variables: { mealTime: "SNACK" }, client: client2 })
+function SnackRecipes({ navigation, user }) {
+    const { loading, error, data } = useQuery(RECIPE_BY_MEAL_TIME, {
+        variables: { mealTime: "SNACK" },
+        client: client2,
+        context: { headers: { "sg-user": user.user_id } }
+    })
     if (loading) return <AppLoading />;
     if (error) return <AppText >`Error! ${error.message}`</AppText >;
 
@@ -392,8 +414,11 @@ function SnackRecipes({ navigation }) {
                 renderItem={({ item }) => (
                     <Pressable onPress={() => navigation.navigate("RecipeDetails", { item: item.node })}>
                         <Card onPress={() => {
-
-                            client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: item.node.databaseId } }).then((data) => {
+                            client2.mutate({
+                                mutation: ADD_TO_USER_FAVORITE,
+                                variables: { recipeId: item.node.databaseId },
+                                context: { headers: { "sg-user": user.user_id } }
+                            }).then((data) => {
                                 client2.resetStore()
 
                                 Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
@@ -442,38 +467,42 @@ function SnackRecipes({ navigation }) {
 
 
 export default function RecipeHome({ navigation, route }) {
+    const { user, } = useContext(AuthContext)
+    if (route.params)
+        route.params.refetch ? client2.resetStore() : null
+
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // The screen is focused
             // Call any action
-            console.log(route.params)
-            client2.reFetchObservableQueries()
         });
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
     }, [navigation]);
+
+
     return (
         <Screen>
             <View style={{ backgroundColor: colors.light, flex: 1, }}>
 
                 <View style={{ padding: 20 }}>
-                    <MyComponent navigation={navigation} />
+                    <MyComponent navigation={navigation} user={user} />
                 </View>
 
                 <ScrollView>
 
-                    <FavoriteRecipes navigation={navigation} />
+                    <FavoriteRecipes navigation={navigation} user={user} />
 
-                    <PopularRecipes navigation={navigation} />
+                    <PopularRecipes navigation={navigation} user={user} />
 
-                    <BreakfastRecipes navigation={navigation} />
+                    <BreakfastRecipes navigation={navigation} user={user} />
 
-                    <LunchRecipes navigation={navigation} />
+                    <LunchRecipes navigation={navigation} user={user} />
 
-                    <DinnerRecipes navigation={navigation} />
+                    <DinnerRecipes navigation={navigation} user={user} />
 
-                    <SnackRecipes navigation={navigation} />
+                    <SnackRecipes navigation={navigation} user={user} />
 
                 </ScrollView>
 

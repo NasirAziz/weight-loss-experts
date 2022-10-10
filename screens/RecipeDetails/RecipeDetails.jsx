@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { StyleSheet, View, Image, ScrollView, Pressable, BackHandler } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMutation, ApolloClient, InMemoryCache, } from '@apollo/client';
@@ -12,6 +12,7 @@ import colors from '../../config/colors';
 import ADD_TO_SHOPPING_LIST from '../../Backend/Suggestic/Mutaions/addToShoppingList';
 import ADD_TO_USER_FAVORITE from '../../Backend/Suggestic/Mutaions/addTouserFavorite';
 import BackButton from '../../components/BackButton';
+import AuthContext from '../../authentication/context';
 
 
 const client2 = new ApolloClient({
@@ -19,20 +20,19 @@ const client2 = new ApolloClient({
     cache: new InMemoryCache(),
     headers: {
         "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
-        "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
     },
 });
 let shouldRefetch = false;
 let wasFavorite = false;
 
-function FavIcon({ isFav, id }) {
+function FavIcon({ isFav, id, user }) {
     const [isUserFav, setIsUSerFav] = useState(isFav)
     return (
         <>
             <Pressable onPress={() => {
-                client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: id } })
+                client2.mutate({ mutation: ADD_TO_USER_FAVORITE, variables: { recipeId: id }, context: { headers: { "sg-user": user.user_id } } })
                     .then((data) => {
-                        shouldRefetch = data.data.userFavoriteRecipe.isUserFavorite === wasFavorite;
+                        shouldRefetch = !(data.data.userFavoriteRecipe.isUserFavorite === wasFavorite);
                         // client2.resetStore()
                         setIsUSerFav(data.data.userFavoriteRecipe.isUserFavorite)
                         Toast.show(data.data.userFavoriteRecipe.isUserFavorite ? 'Recipe Added To Favorites' : "Recipe Removed From Favorites", {
@@ -64,6 +64,9 @@ function FavIcon({ isFav, id }) {
 }
 
 export default function RecipeDetails({ route, navigation }) {
+    const { user } = useContext(AuthContext)
+    const { item } = route.params;
+
     React.useEffect(() => {
         BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
@@ -75,7 +78,6 @@ export default function RecipeDetails({ route, navigation }) {
         navigation.navigate({ name: "RecipeHome", params: { refetch: shouldRefetch }, merge: true })
         return true
     }
-    const { item } = route.params;
     const [addToSoppingListM] = useMutation(ADD_TO_SHOPPING_LIST, {
         variables: { recipeId: item.databaseId },
         onCompleted: data => {
@@ -100,7 +102,7 @@ export default function RecipeDetails({ route, navigation }) {
                     // calls on toast\`s hide animation end.
                 }
             });
-        }
+        }, context: { headers: { "sg-user": user.user_id } }
     })
     wasFavorite = item.isUserFavorite
     return (
@@ -116,7 +118,7 @@ export default function RecipeDetails({ route, navigation }) {
                 <View style={{ width: "100%", paddingHorizontal: 20, paddingVertical: 30 }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingEnd: 10 }}>
                         <AppText style={styles.recipeText}>RECIPE</AppText>
-                        <FavIcon id={item.databaseId} isFav={item.isUserFavorite} />
+                        <FavIcon id={item.databaseId} isFav={item.isUserFavorite} user={user} />
                     </View>
                     <AppText style={styles.heading}>{item.name}</AppText>
                 </View>

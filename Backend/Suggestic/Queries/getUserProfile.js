@@ -9,11 +9,16 @@ const GET_USER_PROFILE = gql`
             height
             userId
             goalsOn
-            language
+            language            
+            birthdate
             isImperial
             programName
+            targetWeight
             biologicalSex
+            activityLevel
+            startingWeight
             customAttributes
+            weeklyWeightGoal
             caloricDifference
             basalMetabolicRate
             dailyCaloricIntakeGoal

@@ -5,23 +5,14 @@ import Screen from '../../components/Screen'
 import AppText from '../../components/Text'
 import colors from '../../config/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { ApolloClient, InMemoryCache, useMutation, gql } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import AppButton from '../../components/Button'
 import BackButton from '../../components/BackButton'
 
 
-const client = new ApolloClient({
-    uri: 'https://production.suggestic.com/graphql',
-    cache: new InMemoryCache(),
-    headers: {
-        "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
-        "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
-    },
-});
-
 export default function UnitPreference({ navigation, route }) {
-    const init = route.params ? route.params.isImperial : false
-    const [isImperial, setIsImperial] = useState(init)
+    let { sguser, isImperial } = route.params
+    const [isImperialS, setIsImperial] = useState(isImperial)
 
     const [update] = useMutation(gql`
         mutation updateProfile($isImperial:Boolean){
@@ -33,16 +24,24 @@ export default function UnitPreference({ navigation, route }) {
             }
         }
     `
-        , { onCompleted: () => navigation.goBack() })
+        , {
+            context: {
+                headers: {
+                    "sg-user": sguser
+                }
+            },
+            onCompleted: () => navigation.navigate("Profile", { isImperial: isImperialS })
+        })
+
     return (
         <Screen style={{ paddingHorizontal: 10, paddingTop: 60 }}>
             <BackButton onPress={() => navigation.goBack()} style={{ top: 10 }} />
-            <UnitItem isActive={isImperial} units={"lb, in, fl, oz"} unitSystem="Imperial" onPress={() => setIsImperial(true)} />
-            <UnitItem isActive={!isImperial} units={"kg, cm, g, ml"} unitSystem="Metric" onPress={() => setIsImperial(false)} />
+            <UnitItem isActive={isImperialS} units={"lb, in, fl, oz"} unitSystem="Imperial" onPress={() => setIsImperial(true)} />
+            <UnitItem isActive={!isImperialS} units={"kg, cm, g, ml"} unitSystem="Metric" onPress={() => setIsImperial(false)} />
             <View style={{ position: "absolute", bottom: 20, right: 10, left: 10 }}>
 
                 <AppButton title={"Save"} onPress={() => {
-                    update({ variables: { isImperial: isImperial } })
+                    update({ variables: { isImperial: isImperialS } })
                         .catch((err) => console.log(JSON.stringify(err)))
                 }} />
             </View>
@@ -62,10 +61,7 @@ function UnitItem({ isActive = false, unitSystem, units, onPress }) {
             marginVertical: 20,
         }}>
 
-            <View style={{
-
-
-            }}>
+            <View>
                 <AppText style={{ fontWeight: "bold", marginBottom: 8, fontSize: 20 }}>{unitSystem}</AppText>
                 <Text style={{ fontSize: 16 }}>{units}</Text>
             </View>

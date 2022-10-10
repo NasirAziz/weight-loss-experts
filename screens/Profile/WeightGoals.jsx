@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Switch, Text, View, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useQuery, useMutation, ApolloClient, InMemoryCache, NormalizedCacheObject, } from '@apollo/client';
+import { useQuery, useMutation, resetCaches, RefetchQueriesFunction } from '@apollo/client';
 
-import defaultStyles from "../../config/styles";
+import AppLoading from '../AppLoading';
 import colors from '../../config/colors';
 import Screen from '../../components/Screen';
 import AppText from '../../components/Text';
-import AppPicker from '../../components/Picker';
 import AppButton from "../../components/Button"
-import GET_USER_PROFILE2 from '../../Backend/Suggestic/Queries/getUserProfile2';
-import AppLoading from '../AppLoading';
+import defaultStyles from "../../config/styles";
+import AppPicker from '../../components/Picker';
 import BackButton from '../../components/BackButton';
+import GET_USER_PROFILE from '../../Backend/Suggestic/Queries/getUserProfile';
 import PROFILE_MACRO_GOALS_SETTINGS from '../../Backend/Suggestic/Mutaions/profileMacroGoalsSettings';
 
 const listOfGenders = [{ label: "MALE", value: "MALE" }, { label: "FEMALE", value: "FEMALE" }]
@@ -38,16 +38,18 @@ let selectedActivityLevel = "";
 let selectedCurrentWeight = "";
 let selectedTargetWeight = "";
 
-const client = new ApolloClient({
-    uri: 'https://production.suggestic.com/graphql',
-    cache: new InMemoryCache(),
-    headers: {
-        "Authorization": 'Token e4a2aaf2883e9a174b8edd44793dabc657418db0',
-        "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
-    },
-});
-export default function WeightGoals({ navigation }) {
-    const { loading, error, data } = useQuery(GET_USER_PROFILE2, { client: client })
+
+export default function WeightGoals({ navigation, route }) {
+    let { sguser } = route.params
+
+    const { loading, error, data, } = useQuery(GET_USER_PROFILE, {
+        fetchPolicy: "network-only",
+        context: {
+            headers: {
+                "sg-user": sguser
+            }
+        },
+    })
 
 
     const [isPickerShow, setIsPickerShow] = useState(false);
@@ -98,19 +100,24 @@ export default function WeightGoals({ navigation }) {
                 console.log(selectedHeight, height, selectedCurrentWeight, currentWeight)
 
             }
-            console.log(data)
+            // console.log(data)
 
-
-            setTimeout(() => { }, 5000)
 
         }
     }, [data])
 
     const [update] = useMutation(PROFILE_MACRO_GOALS_SETTINGS,
         {
+            context: {
+                headers: {
+                    "sg-user": sguser
+                }
+            },
+            // refetchQueries: [
+            //     { query: GET_USER_PROFILE }
+            // ],
             onCompleted: (data) => {
                 if (data.profileMacroGoalsSettings.success) {
-                    client.resetStore()
                     navigation.goBack()
                 }
             }
@@ -273,7 +280,7 @@ export default function WeightGoals({ navigation }) {
                 </View>
             </ScrollView>
 
-            <View style={{ position: "absolute", bottom: 0, right: 10, left: 10 }}>
+            <View style={{ bottom: 0, padding: 10 }}>
 
                 <AppButton title={"Save"} onPress={() => {
                     update({

@@ -5,27 +5,44 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TouchableOpacity, Text } from "react-native"
-
-
-import navigationTheme from './navigationTheme';
-import HomeStack from './Navigation/HomeStack';
-import ProfileStack from './Navigation/ProfileStack';
-import AuthNavigationStack from './Navigation/AuthNavigationStack';
-import RecipesStack from './Navigation/RecipesStack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+
 import colors from './config/colors';
-import ShoppingList from './screens/ShoppingList/ShoppingList';
+import AppLoading from './screens/AppLoading';
+import HomeStack from './Navigation/HomeStack';
+import navigationTheme from './navigationTheme';
 import AuthContext from './authentication/context';
+import authStorage from './authentication/storage';
+import ProfileStack from './Navigation/ProfileStack';
+import RecipesStack from './Navigation/RecipesStack';
+import AuthNavigationStack from './Navigation/AuthNavigationStack';
 
 
 
 // Initialize Apollo Client
 const client = new ApolloClient({
   uri: 'https://production.suggestic.com/graphql',
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          myProfile: {
+            merge(existing, incoming) {
+              return incoming;
+            }
+          },
+          // getAllAuthors: {
+          //   merge(existing, incoming) {
+          //     return incoming;
+          //   }
+          // },
+        },
+      },
+    }
+  }),
   headers: {
     "Authorization": "Token e4a2aaf2883e9a174b8edd44793dabc657418db0",
-    "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
   },
 });
 const Stack = createNativeStackNavigator();
@@ -95,6 +112,23 @@ export function TabNavigator() {
 
 export default function App() {
   const [user, setUser] = React.useState()
+  const [isLoading, setIsLoading] = React.useState(true)
+
+
+  React.useEffect(() => {
+    const restoreUser = async () => {
+      const user = await authStorage.getUser();
+      if (user) {
+        setUser(user)
+        setIsLoading(false)
+
+      }
+    }
+
+    restoreUser()
+  }, [])
+  // restoreUser()
+  if (isLoading) return <AppLoading />
   return (
     <AuthContext.Provider value={{ user, setUser }}>
 
