@@ -19,7 +19,6 @@ const client = new ApolloClient({
     cache: new InMemoryCache(),
     headers: {
         "Authorization": "Token e4a2aaf2883e9a174b8edd44793dabc657418db0",
-        "sg-user": "37b9ff2a-49bf-441c-ab1b-16b753d15bcc"
     },
 });
 
@@ -40,10 +39,15 @@ function EmptyShoppingList({ navigation }) {
     </Screen>
 }
 
-export default function ShoppingList({ navigation }) {
-    const { loading, error, data } = useQuery(SHOPPING_LIST,)
+export default function ShoppingList({ navigation, route }) {
+    const { sguser } = route.params
+    const { loading, error, data, client } = useQuery(SHOPPING_LIST, { context: { headers: { "sg-user": sguser } }, fetchPolicy: "network-only" })
     if (loading) return <AppLoading />;
-    if (error) console.log(JSON.stringify(error));
+    if (error) {
+
+        console.log(JSON.stringify(error, null, 2))
+        return <EmptyShoppingList navigation={navigation} />
+    };
     if (data.shoppingList.edges.length <= 0) return <EmptyShoppingList navigation={navigation} />
 
     let arr1 = []
@@ -75,11 +79,12 @@ export default function ShoppingList({ navigation }) {
                     success
                 }
             }
-        `},).then((data) => {
-                navigation.goBack()
-            }).catch((err) => {
-                Toast.show("Something went wrong please try again " + err)
-            })
+        `, context: { headers: { "sg-user": sguser } }
+        },).then((data) => {
+            navigation.goBack()
+        }).catch((err) => {
+            Toast.show("Something went wrong please try again " + err)
+        })
     }
     return (
         <Screen style={{ backgroundColor: colors.light }}>

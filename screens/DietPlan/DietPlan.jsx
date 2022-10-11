@@ -1,109 +1,75 @@
-'use strict';
-import React from "react";
-import { Dimensions, StyleSheet, View, Text, ScrollView, ImageBackground } from "react-native";
-import Svg, { Path } from 'react-native-svg';
-import Week from "../../components/Week";
-import { StatusBar } from 'react-native'
+
+import { useMutation, useQuery } from "@apollo/client";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, ScrollView, } from "react-native";
+import GENERATE_MEAL_PLAN from "../../Backend/Suggestic/Mutaions/generateMealPlan";
+import GET_USER_MEAL_PLAN from "../../Backend/Suggestic/Queries/getUserMealPlan";
 import BackButton from "../../components/BackButton";
-function DietPlan({ navigation }) {
+import Screen from "../../components/Screen";
+import AppText from "../../components/Text";
+import colors from "../../config/colors";
+import AppLoading from "../AppLoading";
+import DietPlanDayItem from "./DietPlanDayItem";
 
+
+
+
+// value.toISOString("YYYY-MM-DD").split('T')[0]
+function DietPlan({ navigation, route }) {
+  let { sguser } = route.params
+  const todayDate = new Date().toISOString("YYYY-MM-DD").split('T')[0];
+  const [mealData, setMealData] = useState()
+  const [dataReady, setDataReady] = useState(false)
+  const { loading, error, data } = useQuery(GET_USER_MEAL_PLAN, { context: { headers: { "sg-user": sguser } }, fetchPolicy: "network-only" })
+  const [update] = useMutation(GENERATE_MEAL_PLAN,
+    {
+      variables: { includeFavorites: true, ignoreLock: false },
+      context: { headers: { "sg-user": sguser } }
+    })
+  // console.log(loading, error, data)
+  useEffect(() => {
+    if (!loading)
+      if (data.mealPlan.length <= 0 || data.mealPlan[0].date == todayDate) {// TODO double check this condition and make it better 
+        update().then((data) => {
+          setMealData(data.generateMealPlan.mealPlan)
+          setDataReady(true)
+        })
+      } else {
+        setMealData(data.mealPlan)
+        setDataReady(true)
+      }
+  }, [loading])
+
+
+  if (!dataReady) return <AppLoading />
   return (
-
-    <View style={styles.Container}>
-      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="green" translucent={true} />
-      <View style={styles.top}>
-        <ImageBackground style={{ width: "100%", height: 200 }} source={require("../../assets/women-bmi.png")} >
-          <Svg
-            height={200}
-            width={Dimensions.get('screen').width}
-            viewBox="0 0 1440 320"
-            style={styles.topWavy}
-          >
-            <Path
-              fill="green"
-              d='M0,192L60,170.7C120,149,240,107,360,112C480,117,600,171,720,197.3C840,224,960,224,1080,208C1200,192,1320,160,1380,144L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z'
-            />
-          </Svg>
-          <Text style={styles.text}> Your Diet Plan</Text>
-        </ImageBackground>
-
-        <BackButton />
+    <Screen style={{ backgroundColor: colors.light }} >
+      <View style={{ flexDirection: "row", backgroundColor: colors.white, justifyContent: "space-between", alignItems: "center", padding: 25 }}>
+        <BackButton style={{ position: "relative", top: 5, left: 0 }} onPress={() => navigation.goBack()} />
+        <AppText style={{ fontSize: 22 }}>Your This Week's Diet</AppText>
+        <MaterialCommunityIcons style={{}} name="shopping" size={30} color={colors.dodgerblue}
+          onPress={() => navigation.navigate("ShoppingList", { sguser: sguser })} />
       </View>
-      <ScrollView style={styles.scroll}>
-        <View style={styles.weeks}>
-          <Week name="Week 1" lock={false} />
+      <ScrollView >
+        <View style={styles.scroll}>
 
-          <View style={{ width: 50, height: 10 }}></View>
-          <Week name="Week 2" lock={false} />
-          <View style={{ width: 50, height: 10 }}></View>
-          <Week name="Week 3" lock={false} />
-          <View style={{ width: 50, height: 10 }}></View>
-          <Week name="Week 4" lock={false} />
-          <View style={{ width: 50, height: 10 }}></View>
-          <Week name="Week 5" lock={false} />
-          <View style={{ width: 50, height: 10 }}></View>
-          <Week name="Week 6" lock={false} />
-          <View style={{ width: 50, height: 10 }} ></View>
-          <Week name="Week 7" lock={false} />
-          <View style={{ width: 50, height: 10 }}></View>
-          <Week name="Week 8" lock={false} />
-          <View style={{ width: 50, height: 10 }}></View>
-          <Week name="Week 9" lock={false} />
-          <View style={{ width: 50, height: 10 }}></View>
-          <Week name="Week 10" lock={false} />
-
-
-
+          {mealData.map((mealDay, index) => <DietPlanDayItem
+            key={mealDay.id}
+            navigation={navigation}
+            mealPlan={mealDay}
+            isToday={mealDay.date == todayDate} />)}
         </View>
       </ScrollView>
-
-
-    </View>
+    </Screen>
   )
 }
 
 const styles = StyleSheet.create({
-  topWavy: {
-    position: "absolute",
-    marginTop: "-10%",
+  scroll: {
+    flexDirection: "column-reverse",
+    padding: 10
+  },
 
-
-  },
-  Container: {
-    flex: 1
-  },
-  top: {
-
-  },
-  text: {
-    fontSize: 30,
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: "30%",
-    marginLeft: "10%",
-    marginRight: "10%",
-    fontFamily: "sans-serif-condensed"
-
-  },
-  Box: {
-    backgroundColor: 'green',
-    height: 80,
-  },
-  overlay: {
-    flex: 1,
-    position: "absolute",
-    left: 0,
-    top: 80,
-    width: "100%",
-    height: "100%",
-    backgroundColor: 'white',
-    width: "100%",
-    opacity: 1,
-  },
-  weeks: {
-    marginTop: 50,
-
-  }
 });
 export default DietPlan;

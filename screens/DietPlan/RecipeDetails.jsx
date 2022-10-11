@@ -42,18 +42,6 @@ function FavIcon({ isFav, id, user }) {
                             animation: true,
                             hideOnPress: true,
                             delay: 0,
-                            onShow: () => {
-                                // calls on toast\`s appear animation start
-                            },
-                            onShown: () => {
-                                // calls on toast\`s appear animation end.
-                            },
-                            onHide: () => {
-                                // calls on toast\`s hide animation start.
-                            },
-                            onHidden: () => {
-                                // calls on toast\`s hide animation end.
-                            }
                         });
                     }).catch((err) => console.log(JSON.stringify(err, null, 2)))
             }}>
@@ -75,7 +63,7 @@ export default function RecipeDetails({ route, navigation }) {
     }, []);
 
     const onBackPress = () => {
-        navigation.navigate({ name: "RecipeHome", params: { refetch: shouldRefetch }, merge: true })
+        navigation.goBack()
         return true
     }
     const [addToSoppingListM] = useMutation(ADD_TO_SHOPPING_LIST, {
@@ -93,6 +81,7 @@ export default function RecipeDetails({ route, navigation }) {
         }, context: { headers: { "sg-user": user.user_id } }
     })
     wasFavorite = item.isUserFavorite
+    console.log(item)
     return (
         <Screen>
             <BackButton onPress={onBackPress} style={{ marginTop: 40, marginStart: 5 }} />
@@ -162,11 +151,11 @@ export default function RecipeDetails({ route, navigation }) {
 
                 <View style={[styles.container, { alignItems: "flex-start", justifyContent: "flex-start", }]}>
                     {item.instructions.map((instruction, index) => {
-                        return < >
+                        return < React.Fragment key={index + 100}>
                             <AppText key={index} style={{ margin: 10, fontSize: 16, fontFamily: "serif" }}>{instruction}</AppText>
                             {index !== item.instructions.length - 1 && <View key={instruction} style={{ width: "100%", backgroundColor: colors.grey, height: 1, opacity: 0.2, margin: 10 }} />}
 
-                        </>
+                        </React.Fragment>
                     })}
                 </View>
                 <View style={{ width: "100%", backgroundColor: "#fafafa", height: 15 }} />

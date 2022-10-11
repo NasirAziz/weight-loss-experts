@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 
 const SWAPE_MEAL_PLAN_RECIPE = gql`
     mutation swapMealPlanRecipe  (
-      $recipeId: String
+      $recipeId: String!
       $mealId: String    
     
     ){

@@ -14,7 +14,7 @@ import HomeButton from '../../components/HomeButton'
 import HomePlanCard from '../../components/HomePlanCard'
 import Screen from '../../components/Screen'
 import colors from '../../config/colors'
-import AuthContext from '../../authentication/context';
+import useAuth from '../../authentication/useAuth';
 
 
 const client = new ApolloClient({
@@ -28,9 +28,8 @@ const client = new ApolloClient({
 
 
 export default function HomeScreen({ navigation }) {
+    const { user } = useAuth()
 
-    const { user, setuser } = useContext(AuthContext)
-    console.log(user)
     return (
         <View>
             <ScrollView style={styles.container2}>
@@ -42,7 +41,8 @@ export default function HomeScreen({ navigation }) {
                         <AppText style={styles.heading}>
                             Your Weekly Diet Plan
                         </AppText>
-                        <HomePlanCard image={require("../../assets/food.jpg")} text="Diet Plan" onPress={() => { navigation.navigate("DietPlan") }} />
+                        <HomePlanCard image={require("../../assets/food.jpg")} text="Diet Plan"
+                            onPress={() => { navigation.navigate("DietPlan", { sguser: user.user_id }) }} />
 
                         <AppText style={styles.heading}>
                             Your Weekly Exercise Plan

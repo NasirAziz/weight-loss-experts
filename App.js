@@ -49,7 +49,7 @@ const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator()
 
-export function TabNavigator() {
+function TabNavigator() {
   return (
     <Tab.Navigator
 
@@ -122,6 +122,9 @@ export default function App() {
         setUser(user)
         setIsLoading(false)
 
+      } else {
+        setUser(null)
+        setIsLoading(false)
       }
     }
 

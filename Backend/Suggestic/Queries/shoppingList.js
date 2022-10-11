@@ -6,7 +6,6 @@ const SHOPPING_LIST = gql`
       edges {
         node {
           unit
-          errors
           isDone
           comment
           quantity
